@@ -6,7 +6,9 @@ import com.gfutac.restfilter.filter.GenericSpecificationBuilder;
 import com.gfutac.restfilter.filter.SearchOperation;
 import com.gfutac.restfilter.model.Author;
 import com.gfutac.restfilter.model.Book;
+import com.gfutac.restfilter.model.BookChapter;
 import com.gfutac.restfilter.repositories.AuthorRepository;
+import com.gfutac.restfilter.repositories.BookChapterRepository;
 import com.gfutac.restfilter.repositories.BookRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,6 +38,9 @@ public class FilterIntegrationTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookChapterRepository bookChapterRepository;
 
     @Test
     public void givenName_whenGettingListOfAuthors_thenCorrect() {
@@ -201,5 +206,25 @@ public class FilterIntegrationTest {
 //                "A Storm of Swords",
                 "A Feast for Crows",
                 "A Dance with Dragons").contains(i.getName())));
+    }
+
+    @Test
+    public void givenAuthorName_WhenGettingListOfBookChapters_thenCorrect() {
+        var builder = new GenericSpecificationBuilder<BookChapter>();
+
+        var specification = builder
+                .with("book.name", SearchOperation.EQ, "A Game of Thrones")
+                .with("book.author.name", SearchOperation.EQ, "George Martin")
+                .build();
+
+        var result = this.bookChapterRepository.findAll(specification);
+
+        Assert.assertEquals(4, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of(
+                "Prologue",
+                "Bran I",
+                "Catelyn I",
+                "Daenerys I").contains(i.getName())));
+
     }
 }
