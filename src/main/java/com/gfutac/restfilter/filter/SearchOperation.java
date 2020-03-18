@@ -9,12 +9,13 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class SearchCriteria {
+public class SearchOperation {
     public static final String GT = ">";
     public static final String LT = "<";
     public static final String EQ = ":";
+    public static final String NE = "!";
 
-    private String key;
+    private String operand;
     private String operation;
     private Object value;
 }

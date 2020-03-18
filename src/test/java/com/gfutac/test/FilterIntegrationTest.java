@@ -3,7 +3,7 @@ package com.gfutac.test;
 import com.gfutac.Application;
 import com.gfutac.restfilter.filter.GenericSpecification;
 import com.gfutac.restfilter.filter.GenericSpecificationBuilder;
-import com.gfutac.restfilter.filter.SearchCriteria;
+import com.gfutac.restfilter.filter.SearchOperation;
 import com.gfutac.restfilter.model.Author;
 import com.gfutac.restfilter.model.Book;
 import com.gfutac.restfilter.repositories.AuthorRepository;
@@ -14,16 +14,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +39,7 @@ public class FilterIntegrationTest {
 
     @Test
     public void givenName_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchCriteria("name", SearchCriteria.EQ, "J.R.R Tolkien"));
+        var specification = new GenericSpecification<Author>(new SearchOperation("name", SearchOperation.EQ, "J.R.R Tolkien"));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -50,7 +47,7 @@ public class FilterIntegrationTest {
 
     @Test
     public void givenId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchCriteria("authorId", SearchCriteria.EQ, 1));
+        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", SearchOperation.EQ, 1));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -58,7 +55,7 @@ public class FilterIntegrationTest {
 
     @Test
     public void givenNonexistingId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchCriteria("authorId", SearchCriteria.EQ, 100));
+        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", SearchOperation.EQ, 100));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertEquals(0, result.size());
@@ -67,10 +64,10 @@ public class FilterIntegrationTest {
     @Test
     public void givenNameWithBuilder_whenGettingListOfAuthors_thenCorrect() {
         var builder = new GenericSpecificationBuilder<Author>();
-        // where name = JRR Tolkien and authorId = 1
+
         var specification = builder
-                .with("name", SearchCriteria.EQ, "J.R.R Tolkien")
-                .with("authorId", SearchCriteria.EQ, 1L)
+                .with("name", SearchOperation.EQ, "J.R.R Tolkien")
+                .with("authorId", SearchOperation.EQ, 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -83,7 +80,7 @@ public class FilterIntegrationTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", SearchCriteria.EQ, 1L)
+                .with("bookId", SearchOperation.EQ, 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -96,7 +93,7 @@ public class FilterIntegrationTest {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder
-                .with("authorId", SearchCriteria.GT, 1L)
+                .with("authorId", SearchOperation.GT, 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -109,8 +106,8 @@ public class FilterIntegrationTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", SearchCriteria.EQ, 1L)
-                .with("author.authorId", SearchCriteria.EQ, 1L)
+                .with("bookId", SearchOperation.EQ, 1L)
+                .with("author.authorId", SearchOperation.EQ, 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -123,8 +120,8 @@ public class FilterIntegrationTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("name", SearchCriteria.EQ, "The Lord Of The Rings")
-                .with("publishingDate", SearchCriteria.GT, LocalDateTime.of(1955, 1, 1, 0, 0))
+                .with("name", SearchOperation.EQ, "The Lord Of The Rings")
+                .with("publishingDate", SearchOperation.GT, LocalDateTime.of(1955, 1, 1, 0, 0))
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -137,9 +134,9 @@ public class FilterIntegrationTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", SearchCriteria.GT, LocalDateTime.of(1996, 1, 1, 0, 0))
-                .with("publishingDate", SearchCriteria.LT, LocalDateTime.of(2001, 1, 1, 0, 0))
-                .with("author.name", SearchCriteria.EQ, "George Martin")
+                .with("publishingDate", SearchOperation.GT, LocalDateTime.of(1996, 1, 1, 0, 0))
+                .with("publishingDate", SearchOperation.LT, LocalDateTime.of(2001, 1, 1, 0, 0))
+                .with("author.name", SearchOperation.EQ, "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -148,6 +145,61 @@ public class FilterIntegrationTest {
         Assert.assertTrue(result.stream().allMatch(i -> List.of("A Game of Thrones", "A Clash of Kings", "A Storm of Swords").contains(i.getName())));
     }
 
+    @Test
+    public void givenNullDates_WhenGettingListOfBooksAndAuthor_thenCorrect() {
+        var builder = new GenericSpecificationBuilder<Book>();
 
+        var specification = builder
+                .with("publishingDate", SearchOperation.EQ, null)
+                .with("author.name", SearchOperation.EQ, "George Martin")
+                .build();
 
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of("The Winds of Winter", "A Dream of Spring").contains(i.getName())));
+    }
+
+    @Test
+    public void givenNullDates_WhenGettingListOfBooksAndAuthorWithPublishDate_thenCorrect() {
+        var builder = new GenericSpecificationBuilder<Book>();
+
+        var specification = builder
+                .with("publishingDate", SearchOperation.NE, null)
+                .with("author.name", SearchOperation.EQ, "George Martin")
+                .build();
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(5, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of(
+                "A Game of Thrones",
+                "A Clash of Kings",
+                "A Storm of Swords",
+                "A Feast for Crows",
+                "A Dance with Dragons").contains(i.getName())));
+    }
+
+    @Test
+    public void givenNullDates_WhenGettingListOfBooksAndAuthorWithPublishDateSecondPage_thenCorrect() {
+        var builder = new GenericSpecificationBuilder<Book>();
+
+        var specification = builder
+                .with("publishingDate", SearchOperation.NE, null)
+                .with("author.name", SearchOperation.EQ, "George Martin")
+                .build();
+
+        var page = 2;
+        var pageable = PageRequest.of(page - 1, 3);
+
+        var result = this.bookRepository.findAll(specification, pageable).toList();
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of(
+//                "A Game of Thrones",
+//                "A Clash of Kings",
+//                "A Storm of Swords",
+                "A Feast for Crows",
+                "A Dance with Dragons").contains(i.getName())));
+    }
 }

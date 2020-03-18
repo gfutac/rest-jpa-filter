@@ -2,7 +2,6 @@ package com.gfutac.restfilter.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -14,14 +13,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GenericSpecificationBuilder<T> {
 
-    private List<SearchCriteria> criteria;
+    private List<SearchOperation> criteria;
 
     public GenericSpecificationBuilder() {
         this.criteria = new ArrayList<>();
     }
 
     public GenericSpecificationBuilder<T> with(String key, String operation, Object value) {
-        this.criteria.add(new SearchCriteria(key, operation, value));
+        this.criteria.add(new SearchOperation(key, operation, value));
         return this;
     }
 
@@ -29,7 +28,7 @@ public class GenericSpecificationBuilder<T> {
         if (this.criteria.size() == 0) return null;
 
         var specifications = this.criteria.stream()
-                .map((Function<SearchCriteria, Specification<T>>)GenericSpecification::new)
+                .map((Function<SearchOperation, Specification<T>>)GenericSpecification::new)
                 .collect(Collectors.toList());
 
         var result = specifications.get(0);
