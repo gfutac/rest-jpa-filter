@@ -5,6 +5,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 
@@ -21,6 +22,9 @@ public class Book {
 
     @Column(name = "Name")
     private String name;
+
+    @Column(name = "PublishingDate")
+    private LocalDateTime publishingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "authorId")
