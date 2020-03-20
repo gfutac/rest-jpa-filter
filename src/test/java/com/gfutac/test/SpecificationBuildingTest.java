@@ -31,7 +31,7 @@ import java.util.List;
 @Rollback
 @ActiveProfiles("local")
 @Profile("local")
-public class FilterIntegrationTest {
+public class SpecificationBuildingTest {
 
     @Autowired
     private AuthorRepository authorRepository;
