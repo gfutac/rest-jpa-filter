@@ -13,7 +13,7 @@ expression
  ;
 
 comparator
- : GT | GE | LT | LE | EQ | LIKE
+ : GT | GE | LT | LE | EQ | NE | LIKE
  ;
 
 value
@@ -27,6 +27,7 @@ GE         : '>=' ;
 LT         : '<' ;
 LE         : '<=' ;
 EQ         : '=' ;
+NE         : '!=';
 LIKE       : '~' ;
 
 LPAREN     : '(' ;

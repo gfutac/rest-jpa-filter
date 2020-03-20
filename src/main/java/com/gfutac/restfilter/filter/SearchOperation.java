@@ -10,11 +10,6 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class SearchOperation {
-    public static final String GT = ">";
-    public static final String LT = "<";
-    public static final String EQ = ":";
-    public static final String NE = "!";
-
     private String operand;
     private String operation;
     private Object value;

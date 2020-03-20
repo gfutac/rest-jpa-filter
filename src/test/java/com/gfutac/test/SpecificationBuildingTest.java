@@ -1,6 +1,7 @@
 package com.gfutac.test;
 
 import com.gfutac.Application;
+import com.gfutac.restfilter.filter.FilterTokenType;
 import com.gfutac.restfilter.filter.GenericSpecification;
 import com.gfutac.restfilter.filter.GenericSpecificationBuilder;
 import com.gfutac.restfilter.filter.SearchOperation;
@@ -44,7 +45,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenName_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchOperation("name", SearchOperation.EQ, "J.R.R Tolkien"));
+        var specification = new GenericSpecification<Author>(new SearchOperation("name", FilterTokenType.COMPARATOR_EQ.getValue(), "J.R.R Tolkien"));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -52,7 +53,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", SearchOperation.EQ, 1));
+        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", FilterTokenType.COMPARATOR_EQ.getValue(), 1));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -60,7 +61,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNonexistingId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", SearchOperation.EQ, 100));
+        var specification = new GenericSpecification<Author>(new SearchOperation("authorId", FilterTokenType.COMPARATOR_EQ.getValue(), 100));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertEquals(0, result.size());
@@ -71,8 +72,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder
-                .with("name", SearchOperation.EQ, "J.R.R Tolkien")
-                .with("authorId", SearchOperation.EQ, 1L)
+                .with("name", FilterTokenType.COMPARATOR_EQ.getValue(), "J.R.R Tolkien")
+                .with("authorId", FilterTokenType.COMPARATOR_EQ.getValue(), 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -85,7 +86,7 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", SearchOperation.EQ, 1L)
+                .with("bookId", FilterTokenType.COMPARATOR_EQ.getValue(), 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -98,7 +99,7 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder
-                .with("authorId", SearchOperation.GT, 1L)
+                .with("authorId", FilterTokenType.COMPARATOR_GT.getValue(), 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -111,8 +112,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", SearchOperation.EQ, 1L)
-                .with("author.authorId", SearchOperation.EQ, 1L)
+                .with("bookId", FilterTokenType.COMPARATOR_EQ.getValue(), 1L)
+                .with("author.authorId", FilterTokenType.COMPARATOR_EQ.getValue(), 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -125,8 +126,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("name", SearchOperation.EQ, "The Lord Of The Rings")
-                .with("publishingDate", SearchOperation.GT, LocalDateTime.of(1955, 1, 1, 0, 0))
+                .with("name", FilterTokenType.COMPARATOR_EQ.getValue(), "The Lord Of The Rings")
+                .with("publishingDate", FilterTokenType.COMPARATOR_GT.getValue(), LocalDateTime.of(1955, 1, 1, 0, 0))
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -139,9 +140,9 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", SearchOperation.GT, LocalDateTime.of(1996, 1, 1, 0, 0))
-                .with("publishingDate", SearchOperation.LT, LocalDateTime.of(2001, 1, 1, 0, 0))
-                .with("author.name", SearchOperation.EQ, "George Martin")
+                .with("publishingDate", FilterTokenType.COMPARATOR_GT.getValue(), LocalDateTime.of(1996, 1, 1, 0, 0))
+                .with("publishingDate", FilterTokenType.COMPARATOR_LT.getValue(), LocalDateTime.of(2001, 1, 1, 0, 0))
+                .with("author.name", FilterTokenType.COMPARATOR_EQ.getValue(), "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -155,8 +156,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", SearchOperation.EQ, null)
-                .with("author.name", SearchOperation.EQ, "George Martin")
+                .with("publishingDate", FilterTokenType.COMPARATOR_EQ.getValue(), null)
+                .with("author.name", FilterTokenType.COMPARATOR_EQ.getValue(), "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -170,8 +171,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", SearchOperation.NE, null)
-                .with("author.name", SearchOperation.EQ, "George Martin")
+                .with("publishingDate", FilterTokenType.COMPARATOR_NE.getValue(), null)
+                .with("author.name", FilterTokenType.COMPARATOR_EQ.getValue(), "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -190,8 +191,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", SearchOperation.NE, null)
-                .with("author.name", SearchOperation.EQ, "George Martin")
+                .with("publishingDate", FilterTokenType.COMPARATOR_NE.getValue(), null)
+                .with("author.name", FilterTokenType.COMPARATOR_EQ.getValue(), "George Martin")
                 .build();
 
         var page = 2;
@@ -213,8 +214,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<BookChapter>();
 
         var specification = builder
-                .with("book.name", SearchOperation.EQ, "A Game of Thrones")
-                .with("book.author.name", SearchOperation.EQ, "George Martin")
+                .with("book.name", FilterTokenType.COMPARATOR_EQ.getValue(), "A Game of Thrones")
+                .with("book.author.name", FilterTokenType.COMPARATOR_EQ.getValue(), "George Martin")
                 .build();
 
         var result = this.bookChapterRepository.findAll(specification);
@@ -226,5 +227,56 @@ public class SpecificationBuildingTest {
                 "Catelyn I",
                 "Daenerys I").contains(i.getName())));
 
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() throws Exception {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("authorId = 1");
+
+        var result = this.authorRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("J.R.R Tolkien", result.get(0).getName());
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() throws Exception {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("authorId = 1 OR name = \"George Martin\"");
+
+        var result = this.authorRepository.findAll(specification);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals("J.R.R Tolkien", result.get(0).getName());
+        Assert.assertEquals("George Martin", result.get(1).getName());
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() throws Exception {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("name ~ \"George\"");
+
+        var result = this.authorRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("George Martin", result.get(0).getName());
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() throws Exception {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("(name ~ \"George\" OR name ~ \"Edgar\") AND authorId < 4");
+
+        var result = this.authorRepository.findAll(specification);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of(
+                "George Martin",
+                "Edgar Allan Poe").contains(i.getName())));
     }
 }

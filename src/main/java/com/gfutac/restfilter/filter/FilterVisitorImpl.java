@@ -34,8 +34,7 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
 
     @Override
     public Object visitParenExpression(FilterParser.ParenExpressionContext ctx) {
-        var res = super.visitParenExpression(ctx);
-        return res;
+        return super.visitParenExpression(ctx);
     }
 
     @Override
@@ -48,7 +47,21 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
         if (ctx.op.LE() != null) tokenType = FilterTokenType.COMPARATOR_LE;
         if (ctx.op.LT() != null) tokenType = FilterTokenType.COMPARATOR_LT;
 
-        var op = new SearchOperation(ctx.left.getText(), tokenType.getValue(), ctx.right.getText());
+        Object value = null;
+        String txt = ctx.right.getText();
+        if (ctx.right.STRING() != null) {
+            if (txt.startsWith("\"") && txt.endsWith("\"")) {
+                value = txt.substring(1, txt.length() - 1);
+            }
+        } else if (ctx.right.DECIMAL() != null) {
+            if (txt.contains(".")) {
+                value = Double.parseDouble(txt);
+            } else {
+                value = Long.parseLong(txt);
+            }
+        }
+
+        var op = new SearchOperation(ctx.left.getText(), tokenType.getValue(), value);
         this.tokens.add(new FilterToken(FilterTokenType.SEARCH_OPERATION, op));
 
         return super.visitComparatorExpression(ctx);

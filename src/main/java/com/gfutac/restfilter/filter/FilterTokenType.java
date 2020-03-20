@@ -6,13 +6,11 @@ public enum FilterTokenType {
     COMPARATOR_LT("<"),
     COMPARATOR_LE("<="),
     COMPARATOR_EQ("="),
+    COMPARATOR_NE("!="),
     COMPARATOR_LIKE("~"),
 
     BINARY_AND("AND"),
     BINARY_OR("OR"),
-
-    LPAREN("("),
-    RPAREN(")"),
 
     SEARCH_OPERATION("search_operation");
 

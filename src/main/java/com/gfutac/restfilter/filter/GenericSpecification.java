@@ -25,15 +25,22 @@ public class GenericSpecification<T> implements Specification<T> {
             else path = path.get(r);
         }
 
-        if (criteria.getOperation().equalsIgnoreCase(SearchOperation.EQ) && criteria.getValue() == null) {
+        if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_EQ.getValue()) && criteria.getValue() == null) {
             return builder.isNull(path);
-        } else if (criteria.getOperation().equalsIgnoreCase(SearchOperation.NE) && criteria.getValue() == null) {
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_NE.getValue()) && criteria.getValue() == null) {
             return builder.isNotNull(path);
-        } else if (criteria.getOperation().equalsIgnoreCase(SearchOperation.GT)) {
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_GT.getValue())) {
             return greaterThan(builder, path, criteria.getValue());
-        } else if (criteria.getOperation().equalsIgnoreCase(SearchOperation.LT)) {
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_LT.getValue())) {
             return lessThan(builder, path, criteria.getValue());
-        } else if (criteria.getOperation().equalsIgnoreCase(SearchOperation.EQ)) {
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_EQ.getValue())) {
+            if (path.getJavaType() == String.class) {
+//                return builder.like(path, "%" + criteria.getValue() + "%");
+                return equal(builder, path, criteria.getValue());
+            } else {
+                return equal(builder, path, criteria.getValue());
+            }
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_LIKE.getValue())) {
             if (path.getJavaType() == String.class) {
                 return builder.like(path, "%" + criteria.getValue() + "%");
             } else {
