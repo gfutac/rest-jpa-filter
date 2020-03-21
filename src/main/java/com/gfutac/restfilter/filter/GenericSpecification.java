@@ -35,8 +35,12 @@ public class GenericSpecification<T> implements Specification<T> {
                 return notEqual(builder, path, criteria.getValue());
             case COMPARATOR_GT:
                 return greaterThan(builder, path, criteria.getValue());
+            case COMPARATOR_GE:
+                return greaterThanOrEqual(builder, path, criteria.getValue());
             case COMPARATOR_LT:
                 return lessThan(builder, path, criteria.getValue());
+            case COMPARATOR_LE:
+                return lessThanOrEqual(builder, path, criteria.getValue());
             case COMPARATOR_LIKE:
                 if (path.getJavaType() == String.class) {
                     return builder.like(path, "%" + criteria.getValue() + "%");
