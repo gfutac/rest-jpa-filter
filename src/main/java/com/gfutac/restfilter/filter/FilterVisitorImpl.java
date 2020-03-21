@@ -59,7 +59,7 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
             }
         }
 
-        var op = new SearchOperation(ctx.left.getText(), tokenType.getValue(), value);
+        var op = new FilterExpression(ctx.left.getText(), tokenType, value);
         this.tokens.add(new FilterToken(FilterTokenType.SEARCH_OPERATION, op));
 
         return super.visitComparatorExpression(ctx);

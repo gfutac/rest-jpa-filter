@@ -8,6 +8,7 @@ public enum FilterTokenType {
     COMPARATOR_EQ("="),
     COMPARATOR_NE("!="),
     COMPARATOR_LIKE("~"),
+    COMPARATOR_NLIKE("!~"),
 
     BINARY_AND("AND"),
     BINARY_OR("OR"),

@@ -26,7 +26,7 @@ public class FilterTest {
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
-        Assert.assertEquals("someIdentifier", res.peek().getSearchOperation().getOperand());
+        Assert.assertEquals("someIdentifier", res.peek().getFilterExpression().getOperand());
     }
 
     @Test
@@ -43,8 +43,8 @@ public class FilterTest {
         Assert.assertEquals(3, res.size());
 
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("someIdentifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("otherIdentifier", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("someIdentifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("otherIdentifier", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -61,8 +61,8 @@ public class FilterTest {
         Assert.assertEquals(3, res.size());
 
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("someIdentifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("otherIdentifier", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("someIdentifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("otherIdentifier", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -81,9 +81,9 @@ public class FilterTest {
 
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("someIdentifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("otherIdentifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("thirdIdentifier", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("someIdentifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("otherIdentifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("thirdIdentifier", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -99,9 +99,9 @@ public class FilterTest {
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
-        Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
-        Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals(35L, res.peek().getSearchOperation().getValue());
+        Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(35L, res.peek().getFilterExpression().getValue());
     }
 
     @Test
@@ -117,9 +117,9 @@ public class FilterTest {
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
-        Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
-        Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals("some text here!", res.peek().getSearchOperation().getValue());
+        Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals("some text here!", res.peek().getFilterExpression().getValue());
     }
 
     @Test
@@ -136,8 +136,8 @@ public class FilterTest {
         // a * (b) -> * a b
         Assert.assertEquals(3, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("some.identifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("other.nested.identifier", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("some.identifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("other.nested.identifier", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -154,10 +154,10 @@ public class FilterTest {
         // a + (b * c) -> + a * b c
         Assert.assertEquals(5, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
-        Assert.assertEquals("some.identifier", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("some.identifier", res.pollFirst().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("other.nested.identifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("ident", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("other.nested.identifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("ident", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -175,9 +175,9 @@ public class FilterTest {
         Assert.assertEquals(5, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("some.identifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("other.nested.identifier", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("ident", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("some.identifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("other.nested.identifier", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("ident", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -194,12 +194,12 @@ public class FilterTest {
         // a+(b+(c*d)) -> + a + b * c d
         Assert.assertEquals(7, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
-        Assert.assertEquals("a", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("a", res.pollFirst().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
-        Assert.assertEquals("b", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("b", res.pollFirst().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("c", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("d", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("c", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("d", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -217,11 +217,11 @@ public class FilterTest {
         Assert.assertEquals(7, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
-        Assert.assertEquals("a", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("a", res.pollFirst().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("b", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("c", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("d", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("b", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("c", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("d", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -239,11 +239,11 @@ public class FilterTest {
         Assert.assertEquals(7, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
         Assert.assertEquals(FilterTokenType.BINARY_OR, res.pollFirst().getTokenType());
-        Assert.assertEquals("a", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("a", res.pollFirst().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals("b", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("c", res.pollFirst().getSearchOperation().getOperand());
-        Assert.assertEquals("d", res.pollFirst().getSearchOperation().getOperand());
+        Assert.assertEquals("b", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("c", res.pollFirst().getFilterExpression().getOperand());
+        Assert.assertEquals("d", res.pollFirst().getFilterExpression().getOperand());
     }
 
     @Test
@@ -259,9 +259,9 @@ public class FilterTest {
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
-        Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
-        Assert.assertEquals("~", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals("some \"text here!", res.peek().getSearchOperation().getValue());
+        Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals("some \"text here!", res.peek().getFilterExpression().getValue());
     }
 
     @Test
@@ -277,9 +277,9 @@ public class FilterTest {
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
-        Assert.assertEquals("some.date", res.peek().getSearchOperation().getOperand());
-        Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getSearchOperation().getValue());
+        Assert.assertEquals("some.date", res.peek().getFilterExpression().getOperand());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getFilterExpression().getValue());
     }
 
     @Test
@@ -295,7 +295,7 @@ public class FilterTest {
 
         Assert.assertEquals(3, res.size());
         Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
-        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.pollFirst().getSearchOperation().getValue());
-        Assert.assertEquals(555L, res.pollFirst().getSearchOperation().getValue());
+        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.pollFirst().getFilterExpression().getValue());
+        Assert.assertEquals(555L, res.pollFirst().getFilterExpression().getValue());
     }
 }

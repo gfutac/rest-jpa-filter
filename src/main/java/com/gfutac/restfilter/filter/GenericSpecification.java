@@ -13,7 +13,7 @@ import javax.persistence.criteria.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenericSpecification<T> implements Specification<T> {
-    protected SearchOperation criteria;
+    protected FilterExpression criteria;
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
@@ -25,34 +25,30 @@ public class GenericSpecification<T> implements Specification<T> {
             else path = path.get(r);
         }
 
-        if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_EQ.getValue()) && criteria.getValue() == null) {
-            return builder.isNull(path);
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_NE.getValue()) && criteria.getValue() == null) {
-            return builder.isNotNull(path);
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_GT.getValue())) {
-            return greaterThan(builder, path, criteria.getValue());
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_LT.getValue())) {
-            return lessThan(builder, path, criteria.getValue());
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_EQ.getValue())) {
-            if (path.getJavaType() == String.class) {
-//                return builder.like(path, "%" + criteria.getValue() + "%");
+        var op = criteria.getOperation();
+        switch(op) {
+            case COMPARATOR_EQ:
+                if (criteria.getValue() == null) return builder.isNull(path);
                 return equal(builder, path, criteria.getValue());
-            } else {
-                return equal(builder, path, criteria.getValue());
-            }
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_NE.getValue())) {
-            if (path.getJavaType() == String.class) {
-//                return builder.like(path, "%" + criteria.getValue() + "%");
+            case COMPARATOR_NE:
+                if (criteria.getValue() == null) return builder.isNotNull(path);
                 return notEqual(builder, path, criteria.getValue());
-            } else {
-                return notEqual(builder, path, criteria.getValue());
-            }
-        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_LIKE.getValue())) {
-            if (path.getJavaType() == String.class) {
-                return builder.like(path, "%" + criteria.getValue() + "%");
-            } else {
-                return equal(builder, path, criteria.getValue());
-            }
+            case COMPARATOR_GT:
+                return greaterThan(builder, path, criteria.getValue());
+            case COMPARATOR_LT:
+                return lessThan(builder, path, criteria.getValue());
+            case COMPARATOR_LIKE:
+                if (path.getJavaType() == String.class) {
+                    return builder.like(path, "%" + criteria.getValue() + "%");
+                } else {
+                    return equal(builder, path, criteria.getValue());
+                }
+            case COMPARATOR_NLIKE:
+                if (path.getJavaType() == String.class) {
+                    return builder.notLike(path, "%" + criteria.getValue() + "%");
+                } else {
+                    return notEqual(builder, path, criteria.getValue());
+                }
         }
 
         return null;

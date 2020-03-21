@@ -9,8 +9,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class SearchOperation {
+public class FilterExpression {
     private String operand;
-    private String operation;
+    private FilterTokenType operation;
     private Object value;
 }

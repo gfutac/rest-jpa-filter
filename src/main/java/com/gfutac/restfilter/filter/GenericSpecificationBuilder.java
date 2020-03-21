@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GenericSpecificationBuilder<T> {
 
-    private List<SearchOperation> criteria;
+    private List<FilterExpression> criteria;
 
     public GenericSpecificationBuilder() {
         this.criteria = new ArrayList<>();
     }
 
-    public GenericSpecificationBuilder<T> with(String key, String operation, Object value) {
-        this.criteria.add(new SearchOperation(key, operation, value));
+    public GenericSpecificationBuilder<T> with(String key, FilterTokenType operation, Object value) {
+        this.criteria.add(new FilterExpression(key, operation, value));
         return this;
     }
 
@@ -34,7 +34,7 @@ public class GenericSpecificationBuilder<T> {
         if (this.criteria.size() == 0) return null;
 
         var specifications = this.criteria.stream()
-                .map((Function<SearchOperation, Specification<T>>) GenericSpecification::new)
+                .map((Function<FilterExpression, Specification<T>>) GenericSpecification::new)
                 .collect(Collectors.toList());
 
         var result = specifications.get(0);
@@ -57,12 +57,12 @@ public class GenericSpecificationBuilder<T> {
         var prefixExpression = visitor.getTokens();
         Collections.reverse((List<?>)prefixExpression);
 
-        var converter = (Function<SearchOperation, Specification<T>>) GenericSpecification::new;
+        var converter = (Function<FilterExpression, Specification<T>>) GenericSpecification::new;
         var stack = new Stack<Specification<T>>();
 
         for (var token : prefixExpression) {
             if (token.getTokenType() == FilterTokenType.SEARCH_OPERATION || token instanceof Specification) {
-                stack.push(converter.apply(token.getSearchOperation()));
+                stack.push(converter.apply(token.getFilterExpression()));
             } else {
                 var firstOperand = stack.pop();
                 var secondOperand = stack.pop();
