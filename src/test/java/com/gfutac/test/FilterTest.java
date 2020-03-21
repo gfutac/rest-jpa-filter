@@ -3,7 +3,7 @@ package com.gfutac.test;
 import com.gfutac.restfilter.filter.FilterLexer;
 import com.gfutac.restfilter.filter.FilterParser;
 import com.gfutac.restfilter.filter.FilterTokenType;
-import com.gfutac.restfilter.filter.FilterVisitorImpl;
+import com.gfutac.restfilter.filter.FilterExpressionVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();
+        var visitor = new FilterExpressionVisitor();
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -36,7 +36,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -54,7 +54,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -72,7 +72,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -93,14 +93,14 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
         Assert.assertEquals(35L, res.peek().getFilterExpression().getValue());
     }
 
@@ -111,14 +111,14 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
         Assert.assertEquals("some text here!", res.peek().getFilterExpression().getValue());
     }
 
@@ -129,7 +129,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -147,7 +147,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -167,7 +167,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();
+        var visitor = new FilterExpressionVisitor();
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -187,7 +187,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -209,7 +209,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -231,7 +231,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -253,14 +253,14 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getComparison());
         Assert.assertEquals("some \"text here!", res.peek().getFilterExpression().getValue());
     }
 
@@ -271,14 +271,14 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.date", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
         Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getFilterExpression().getValue());
     }
 
@@ -289,7 +289,7 @@ public class FilterTest {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 

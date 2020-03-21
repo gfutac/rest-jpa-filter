@@ -42,27 +42,24 @@ public class GenericSpecificationBuilder<T> {
                 .skip(1)
                 .reduce(result, (tmp, element) -> Specification.where(tmp).and(element));
 
-
         return result;
     }
 
-    public Specification<T> build(String expression) throws Exception {
-
+    public Specification<T> build(String expression) {
         var lexer = new FilterLexer(CharStreams.fromString(expression));
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
-        var visitor = new FilterVisitorImpl();;
+        var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
 
         var prefixExpression = visitor.getTokens();
         Collections.reverse((List<?>)prefixExpression);
 
-        var converter = (Function<FilterExpression, Specification<T>>) GenericSpecification::new;
         var stack = new Stack<Specification<T>>();
 
         for (var token : prefixExpression) {
-            if (token.getTokenType() == FilterTokenType.EXPRESSION || token instanceof Specification) {
-                stack.push(converter.apply(token.getFilterExpression()));
+            if (token.getTokenType() == FilterTokenType.EXPRESSION) {
+                stack.push(new GenericSpecification<>(token.getFilterExpression()));
             } else {
                 var firstOperand = stack.pop();
                 var secondOperand = stack.pop();

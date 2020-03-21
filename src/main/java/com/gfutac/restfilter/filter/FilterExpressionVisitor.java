@@ -5,11 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
+public class FilterExpressionVisitor extends FilterBaseVisitor<Object> {
 
     private Deque<FilterToken> tokens;
 
-    public FilterVisitorImpl() {
+    public FilterExpressionVisitor() {
         this.tokens = new LinkedList<>();
     }
 

@@ -11,6 +11,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class FilterExpression {
     private String operand;
-    private FilterTokenType operation;
+    private FilterTokenType comparison;
     private Object value;
 }

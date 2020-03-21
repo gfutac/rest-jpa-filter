@@ -25,7 +25,7 @@ public class GenericSpecification<T> implements Specification<T> {
             else path = path.get(r);
         }
 
-        var op = criteria.getOperation();
+        var op = criteria.getComparison();
         switch(op) {
             case COMPARATOR_EQ:
                 if (criteria.getValue() == null) return builder.isNull(path);
