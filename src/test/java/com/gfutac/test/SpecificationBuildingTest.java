@@ -126,7 +126,7 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("name", FilterTokenType.COMPARATOR_EQ.getValue(), "The Lord Of The Rings")
+                .with("name", FilterTokenType.COMPARATOR_LIKE.getValue(), "The Lord Of The Rings")
                 .with("publishingDate", FilterTokenType.COMPARATOR_GT.getValue(), LocalDateTime.of(1955, 1, 1, 0, 0))
                 .build();
 
@@ -266,7 +266,7 @@ public class SpecificationBuildingTest {
         Assert.assertEquals("George Martin", result.get(0).getName());
     }
 
-    @Test
+    @Test // ?search=(name ~ "George" OR name ~ "Edgar") AND authorId < 4
     public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() throws Exception {
         var builder = new GenericSpecificationBuilder<Author>();
 

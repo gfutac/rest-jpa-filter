@@ -1,5 +1,7 @@
 package com.gfutac.restfilter.filter;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -58,6 +60,12 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
                 value = Double.parseDouble(txt);
             } else {
                 value = Long.parseLong(txt);
+            }
+        } else if (ctx.right.DATE() != null) {
+            if (txt.startsWith("date\"") && txt.endsWith("\"")) {
+                var tmp = txt.replace("date\"", "");
+                tmp = tmp.substring(0, tmp.length() - 1);
+                value = ZonedDateTime.parse(tmp, DateTimeFormatter.ISO_DATE_TIME);
             }
         }
 

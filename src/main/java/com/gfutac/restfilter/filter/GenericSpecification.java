@@ -40,6 +40,13 @@ public class GenericSpecification<T> implements Specification<T> {
             } else {
                 return equal(builder, path, criteria.getValue());
             }
+        } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_NE.getValue())) {
+            if (path.getJavaType() == String.class) {
+//                return builder.like(path, "%" + criteria.getValue() + "%");
+                return notEqual(builder, path, criteria.getValue());
+            } else {
+                return notEqual(builder, path, criteria.getValue());
+            }
         } else if (criteria.getOperation().equalsIgnoreCase(FilterTokenType.COMPARATOR_LIKE.getValue())) {
             if (path.getJavaType() == String.class) {
                 return builder.like(path, "%" + criteria.getValue() + "%");
@@ -70,4 +77,9 @@ public class GenericSpecification<T> implements Specification<T> {
     private static ComparisonPredicate equal(CriteriaBuilder builder, Path path, Object value) {
         return new ComparisonPredicate((CriteriaBuilderImpl) builder, ComparisonPredicate.ComparisonOperator.EQUAL, path, value);
     }
+
+    private static ComparisonPredicate notEqual(CriteriaBuilder builder, Path path, Object value) {
+        return new ComparisonPredicate((CriteriaBuilderImpl) builder, ComparisonPredicate.ComparisonOperator.NOT_EQUAL, path, value);
+    }
+
 }

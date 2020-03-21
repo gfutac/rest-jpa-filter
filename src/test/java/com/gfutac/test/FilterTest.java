@@ -9,6 +9,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.ZonedDateTime;
+
 public class FilterTest {
 
     @Test
@@ -99,7 +101,7 @@ public class FilterTest {
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
         Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals("35", res.peek().getSearchOperation().getValue());
+        Assert.assertEquals(35L, res.peek().getSearchOperation().getValue());
     }
 
     @Test
@@ -117,7 +119,7 @@ public class FilterTest {
         Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
         Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
-        Assert.assertEquals("\"some text here!\"", res.peek().getSearchOperation().getValue());
+        Assert.assertEquals("some text here!", res.peek().getSearchOperation().getValue());
     }
 
     @Test
@@ -242,5 +244,58 @@ public class FilterTest {
         Assert.assertEquals("b", res.pollFirst().getSearchOperation().getOperand());
         Assert.assertEquals("c", res.pollFirst().getSearchOperation().getOperand());
         Assert.assertEquals("d", res.pollFirst().getSearchOperation().getOperand());
+    }
+
+    @Test
+    public void test_13() {
+        var expression = "some.identifier ~ \"some \"text here!\"";
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+
+        var visitor = new FilterVisitorImpl();;
+        visitor.visitParse(parser.parse());
+        var res = visitor.getTokens();
+
+        Assert.assertEquals(1, res.size());
+        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals("some.identifier", res.peek().getSearchOperation().getOperand());
+        Assert.assertEquals("~", res.peek().getSearchOperation().getOperation());
+        Assert.assertEquals("some \"text here!", res.peek().getSearchOperation().getValue());
+    }
+
+    @Test
+    public void test_14() {
+        var expression = "some.date = date\"2020-03-21T00:52:40.950Z\"";
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+
+        var visitor = new FilterVisitorImpl();;
+        visitor.visitParse(parser.parse());
+        var res = visitor.getTokens();
+
+        Assert.assertEquals(1, res.size());
+        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals("some.date", res.peek().getSearchOperation().getOperand());
+        Assert.assertEquals("=", res.peek().getSearchOperation().getOperation());
+        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getSearchOperation().getValue());
+    }
+
+    @Test
+    public void test_15() {
+        var expression = "some.date = date\"2020-03-21T00:52:40.950Z\" AND other.identifier = 555";
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+
+        var visitor = new FilterVisitorImpl();;
+        visitor.visitParse(parser.parse());
+        var res = visitor.getTokens();
+
+        Assert.assertEquals(3, res.size());
+        Assert.assertEquals(FilterTokenType.BINARY_AND, res.pollFirst().getTokenType());
+        Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.pollFirst().getSearchOperation().getValue());
+        Assert.assertEquals(555L, res.pollFirst().getSearchOperation().getValue());
     }
 }
