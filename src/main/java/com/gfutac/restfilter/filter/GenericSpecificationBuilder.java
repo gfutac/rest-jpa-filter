@@ -61,7 +61,7 @@ public class GenericSpecificationBuilder<T> {
         var stack = new Stack<Specification<T>>();
 
         for (var token : prefixExpression) {
-            if (token.getTokenType() == FilterTokenType.SEARCH_OPERATION || token instanceof Specification) {
+            if (token.getTokenType() == FilterTokenType.EXPRESSION || token instanceof Specification) {
                 stack.push(converter.apply(token.getFilterExpression()));
             } else {
                 var firstOperand = stack.pop();

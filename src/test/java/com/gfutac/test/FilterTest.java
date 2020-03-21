@@ -25,7 +25,7 @@ public class FilterTest {
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
-        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("someIdentifier", res.peek().getFilterExpression().getOperand());
     }
 
@@ -98,7 +98,7 @@ public class FilterTest {
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
-        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
         Assert.assertEquals(35L, res.peek().getFilterExpression().getValue());
@@ -116,7 +116,7 @@ public class FilterTest {
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
-        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
         Assert.assertEquals("some text here!", res.peek().getFilterExpression().getValue());
@@ -258,7 +258,7 @@ public class FilterTest {
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
-        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getOperation());
         Assert.assertEquals("some \"text here!", res.peek().getFilterExpression().getValue());
@@ -276,7 +276,7 @@ public class FilterTest {
         var res = visitor.getTokens();
 
         Assert.assertEquals(1, res.size());
-        Assert.assertEquals(FilterTokenType.SEARCH_OPERATION, res.peek().getTokenType());
+        Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.date", res.peek().getFilterExpression().getOperand());
         Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getOperation());
         Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getFilterExpression().getValue());
