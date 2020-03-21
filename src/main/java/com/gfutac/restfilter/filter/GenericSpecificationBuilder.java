@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.hibernate.Filter;
-import org.hibernate.mapping.Collection;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

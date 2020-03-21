@@ -18,11 +18,6 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitParse(FilterParser.ParseContext ctx) {
-        return super.visitParse(ctx);
-    }
-
-    @Override
     public Object visitBinaryOrExpression(FilterParser.BinaryOrExpressionContext ctx) {
         this.tokens.add(new FilterToken(FilterTokenType.BINARY_OR));
         return super.visitBinaryOrExpression(ctx);
@@ -32,11 +27,6 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
     public Object visitBinaryAndExpression(FilterParser.BinaryAndExpressionContext ctx) {
         this.tokens.add(new FilterToken(FilterTokenType.BINARY_AND));
         return super.visitBinaryAndExpression(ctx);
-    }
-
-    @Override
-    public Object visitParenExpression(FilterParser.ParenExpressionContext ctx) {
-        return super.visitParenExpression(ctx);
     }
 
     @Override
@@ -73,16 +63,6 @@ public class FilterVisitorImpl extends FilterBaseVisitor<Object> {
         this.tokens.add(new FilterToken(FilterTokenType.SEARCH_OPERATION, op));
 
         return super.visitComparatorExpression(ctx);
-    }
-
-    @Override
-    public Object visitComparator(FilterParser.ComparatorContext ctx) {
-        return super.visitComparator(ctx);
-    }
-
-    @Override
-    public Object visitValue(FilterParser.ValueContext ctx) {
-        return super.visitValue(ctx);
     }
 }
 
