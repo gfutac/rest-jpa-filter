@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.time.ZonedDateTime;
 
-public class FilterTest {
+public class FilterGeneralTests {
 
     @Test
     public void test_1() {
