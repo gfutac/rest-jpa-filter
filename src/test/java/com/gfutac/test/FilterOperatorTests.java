@@ -16,8 +16,8 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
-        var visitor = new FilterExpressionVisitor();
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
+        var visitor = new FilterParseTreeVisitor();
         visitor.visitParse(parser.parse());
 
         return visitor.getTokens();
@@ -199,7 +199,7 @@ public class FilterOperatorTests {
         }
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator_whenGetTokens_thenException() {
 
         var expression = "someIdentifier # 55";
@@ -208,12 +208,12 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator2_whenGetTokens_thenException() {
 
         var expression = "someIdentifier !# 55";
@@ -222,12 +222,12 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator3_whenGetTokens_thenException() {
 
         var expression = "someIdentifier asd 55";
@@ -236,12 +236,12 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator4_whenGetTokens_thenException() {
 
         var expression = "someIdentifier \"asd\" 55";
@@ -250,12 +250,12 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator5_whenGetTokens_thenException() {
 
         var expression = "someIdentifier 55";
@@ -264,12 +264,12 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }
 
-    @Test(expected = FilterExpressionParseException.class)
+    @Test(expected = FilterParseException.class)
     public void givenStringExpressionWithUnknownComparator7_whenGetTokens_thenException() {
 
         var expression = "someIdentifier";
@@ -278,7 +278,7 @@ public class FilterOperatorTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
 
         parser.parse();
     }

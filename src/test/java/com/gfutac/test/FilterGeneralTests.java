@@ -3,7 +3,7 @@ package com.gfutac.test;
 import com.gfutac.restfilter.filter.FilterLexer;
 import com.gfutac.restfilter.filter.FilterParser;
 import com.gfutac.restfilter.filter.FilterTokenType;
-import com.gfutac.restfilter.filter.FilterExpressionVisitor;
+import com.gfutac.restfilter.filter.FilterParseTreeVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();
+        var visitor = new FilterParseTreeVisitor();
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -36,7 +36,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -54,7 +54,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -72,7 +72,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -93,7 +93,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -111,7 +111,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -129,7 +129,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -147,7 +147,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -167,7 +167,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();
+        var visitor = new FilterParseTreeVisitor();
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -187,7 +187,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -209,7 +209,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -231,7 +231,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -253,7 +253,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -271,7 +271,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 
@@ -289,7 +289,7 @@ public class FilterGeneralTests {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
 
-        var visitor = new FilterExpressionVisitor();;
+        var visitor = new FilterParseTreeVisitor();;
         visitor.visitParse(parser.parse());
         var res = visitor.getTokens();
 

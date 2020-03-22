@@ -6,15 +6,15 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
 @Slf4j
-public class FilterExpressionErrorListener extends BaseErrorListener {
-    public static final FilterExpressionErrorListener INSTANCE = new FilterExpressionErrorListener();
+public class FilterParseErrorListener extends BaseErrorListener {
+    public static final FilterParseErrorListener INSTANCE = new FilterParseErrorListener();
 
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
-            throws FilterExpressionParseException {
+            throws FilterParseException {
 
         var errorMessage = "line " + line + ":" + charPositionInLine + " " + msg;
         log.error(errorMessage);
-        throw new FilterExpressionParseException(errorMessage);
+        throw new FilterParseException(errorMessage);
     }
 }

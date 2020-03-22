@@ -50,12 +50,12 @@ public class GenericSpecificationBuilder<T> {
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
-        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
-        var visitor = new FilterExpressionVisitor();
+        parser.addErrorListener(FilterParseErrorListener.INSTANCE);
+        var visitor = new FilterParseTreeVisitor();
 
         try {
             visitor.visitParse(parser.parse());
-        } catch (FilterExpressionParseException ex) {
+        } catch (FilterParseException ex) {
             log.error("Could not parse expression. Specification will not be built.", ex);
             throw new SpecificationBuildingException(ex);
         }
