@@ -5,6 +5,7 @@ import com.gfutac.restfilter.filter.FilterParser;
 import com.gfutac.restfilter.filter.parser.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.CharStreams;
@@ -15,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
