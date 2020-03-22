@@ -49,6 +49,8 @@ public class GenericSpecificationBuilder<T> {
         var lexer = new FilterLexer(CharStreams.fromString(expression));
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
         var visitor = new FilterExpressionVisitor();;
         visitor.visitParse(parser.parse());
 

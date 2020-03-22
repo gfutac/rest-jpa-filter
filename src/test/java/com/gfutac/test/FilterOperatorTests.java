@@ -1,15 +1,27 @@
 package com.gfutac.test;
 
-import com.gfutac.restfilter.filter.FilterExpressionVisitor;
-import com.gfutac.restfilter.filter.FilterLexer;
-import com.gfutac.restfilter.filter.FilterParser;
-import com.gfutac.restfilter.filter.FilterTokenType;
+import com.gfutac.restfilter.filter.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Deque;
+import java.util.Objects;
+
 public class FilterOperatorTests {
+
+    private Deque<FilterToken> _getTokens(String expression) {
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+        var visitor = new FilterExpressionVisitor();
+        visitor.visitParse(parser.parse());
+
+        return visitor.getTokens();
+    }
 
     @Test
     public void givenStringExpressionEQ_whenGetTokens_thenCorrect() {
@@ -22,17 +34,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -50,17 +56,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_NE, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -78,17 +78,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_GT, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -106,17 +100,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_GE, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -134,17 +122,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_LT, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -162,17 +144,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_LE, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
@@ -190,17 +166,11 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals("string expression", parsedExpression.getFilterExpression().getValue());
@@ -218,20 +188,98 @@ public class FilterOperatorTests {
         };
 
         for (var expression : expressions) {
-            var lexer = new FilterLexer(CharStreams.fromString(expression));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new FilterParser(tokens);
-            var visitor = new FilterExpressionVisitor();
-
-            visitor.visitParse(parser.parse());
-            var res = visitor.getTokens();
+            var res = this._getTokens(expression);
             var parsedExpression = res.peekFirst();
 
             Assert.assertEquals(1, res.size());
-            Assert.assertNotNull(parsedExpression.getFilterExpression());
+            Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
             Assert.assertEquals(FilterTokenType.COMPARATOR_NLIKE, parsedExpression.getFilterExpression().getComparison());
             Assert.assertEquals("string expression", parsedExpression.getFilterExpression().getValue());
         }
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier # 55";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator2_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier !# 55";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator3_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier asd 55";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator4_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier \"asd\" 55";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator5_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier 55";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
+    }
+
+    @Test(expected = FilterExpressionParseException.class)
+    public void givenStringExpressionWithUnknownComparator7_whenGetTokens_thenException() {
+
+        var expression = "someIdentifier";
+
+        var lexer = new FilterLexer(CharStreams.fromString(expression));
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FilterParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
+
+        parser.parse();
     }
 }

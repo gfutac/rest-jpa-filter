@@ -230,7 +230,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() throws Exception {
+    public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1");
@@ -242,7 +242,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() throws Exception {
+    public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1 OR name = \"George Martin\"");
@@ -255,7 +255,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() throws Exception {
+    public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("name ~ \"George\"");
@@ -267,7 +267,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test // ?search=(name ~ "George" OR name ~ "Edgar") AND authorId < 4
-    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() throws Exception {
+    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("(name ~ \"George\" OR name ~ \"Edgar\") AND authorId < 4");
