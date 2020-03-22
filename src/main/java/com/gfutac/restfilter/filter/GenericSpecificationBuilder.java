@@ -45,17 +45,23 @@ public class GenericSpecificationBuilder<T> {
         return result;
     }
 
-    public Specification<T> build(String expression) {
+    public Specification<T> build(String expression) throws SpecificationBuildingException {
         var lexer = new FilterLexer(CharStreams.fromString(expression));
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(FilterExpressionErrorListener.INSTANCE);
-        var visitor = new FilterExpressionVisitor();;
-        visitor.visitParse(parser.parse());
+        var visitor = new FilterExpressionVisitor();
+
+        try {
+            visitor.visitParse(parser.parse());
+        } catch (FilterExpressionParseException ex) {
+            log.error("Could not parse expression. Specification will not be built.", ex);
+            throw new SpecificationBuildingException(ex);
+        }
 
         var prefixExpression = visitor.getTokens();
-        Collections.reverse((List<?>)prefixExpression);
+        Collections.reverse((List<?>) prefixExpression);
 
         var stack = new Stack<Specification<T>>();
 

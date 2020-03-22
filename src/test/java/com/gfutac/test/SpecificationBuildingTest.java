@@ -1,10 +1,7 @@
 package com.gfutac.test;
 
 import com.gfutac.Application;
-import com.gfutac.restfilter.filter.FilterTokenType;
-import com.gfutac.restfilter.filter.GenericSpecification;
-import com.gfutac.restfilter.filter.GenericSpecificationBuilder;
-import com.gfutac.restfilter.filter.FilterExpression;
+import com.gfutac.restfilter.filter.*;
 import com.gfutac.restfilter.model.Author;
 import com.gfutac.restfilter.model.Book;
 import com.gfutac.restfilter.model.BookChapter;
@@ -230,7 +227,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() {
+    public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1");
@@ -242,7 +239,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() {
+    public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1 OR name = \"George Martin\"");
@@ -255,7 +252,7 @@ public class SpecificationBuildingTest {
     }
 
     @Test
-    public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() {
+    public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("name ~ \"George\"");
@@ -266,8 +263,8 @@ public class SpecificationBuildingTest {
         Assert.assertEquals("George Martin", result.get(0).getName());
     }
 
-    @Test // ?search=(name ~ "George" OR name ~ "Edgar") AND authorId < 4
-    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() {
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder.build("(name ~ \"George\" OR name ~ \"Edgar\") AND authorId < 4");
@@ -278,5 +275,19 @@ public class SpecificationBuildingTest {
         Assert.assertTrue(result.stream().allMatch(i -> List.of(
                 "George Martin",
                 "Edgar Allan Poe").contains(i.getName())));
+    }
+
+    @Test(expected = SpecificationBuildingException.class)
+    public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLike_thenException() throws SpecificationBuildingException {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("name ~~ \"George\"");
+    }
+
+    @Test(expected = SpecificationBuildingException.class)
+    public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLikeAndId_thenException() throws SpecificationBuildingException {
+        var builder = new GenericSpecificationBuilder<Author>();
+
+        var specification = builder.build("name ~~ \"George\" AND authorId = 2");
     }
 }
