@@ -83,6 +83,7 @@
                 <version>${antlr.version}</version>
                 <configuration>
                     <visitor>true</visitor>
+                    <listener>false</listener>
                 </configuration>
                 <executions>
                     <execution>

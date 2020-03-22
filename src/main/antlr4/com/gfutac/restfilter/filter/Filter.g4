@@ -6,10 +6,10 @@ parse
 
 
 expression
- : left=expression op=AND right=expression          #binaryAndExpression
+ : LPAREN expression RPAREN                         #parenExpression
+ | left=expression op=AND right=expression          #binaryAndExpression
  | left=expression op=OR right=expression           #binaryOrExpression
  | left=IDENTIFIER op=comparator right=value        #comparatorExpression
- | LPAREN expression RPAREN                         #parenExpression
  ;
 
 comparator
@@ -19,8 +19,8 @@ comparator
 value
  : DECIMAL | STRING | DATE;
 
-AND        : 'AND' ;
-OR         : 'OR' ;
+AND        : 'AND'|'and' ;
+OR         : 'OR'|'or' ;
 
 GT         : '>' ;
 GE         : '>=' ;

@@ -49,7 +49,7 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         String txt = ctx.right.getText();
         if (ctx.right.STRING() != null) {
             if (txt.startsWith("\"") && txt.endsWith("\"")) {
-                value = txt.substring(1, txt.length() - 1);
+                value = txt.substring(1, txt.length() - 1).trim();
             }
         } else if (ctx.right.DECIMAL() != null) {
             if (txt.contains(".")) {
@@ -65,8 +65,8 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
             }
         }
 
-        var op = new FilterExpression(ctx.left.getText(), tokenType, value);
-        this.tokens.add(new FilterToken(FilterTokenType.EXPRESSION, op));
+        var filterExpression = new FilterExpression(ctx.left.getText(), tokenType, value);
+        this.tokens.add(new FilterToken(FilterTokenType.EXPRESSION, filterExpression));
 
         return super.visitComparatorExpression(ctx);
     }
