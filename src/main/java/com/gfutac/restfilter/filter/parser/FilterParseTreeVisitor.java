@@ -1,4 +1,7 @@
-package com.gfutac.restfilter.filter;
+package com.gfutac.restfilter.filter.parser;
+
+import com.gfutac.restfilter.filter.FilterBaseVisitor;
+import com.gfutac.restfilter.filter.FilterParser;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

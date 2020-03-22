@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.filter;
+package com.gfutac.restfilter.filter.parser;
 
 public enum FilterTokenType {
     COMPARATOR_GT(),

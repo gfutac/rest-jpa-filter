@@ -1,5 +1,6 @@
-package com.gfutac.restfilter.filter;
+package com.gfutac.restfilter.filter.specification;
 
+import com.gfutac.restfilter.filter.parser.FilterExpression;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

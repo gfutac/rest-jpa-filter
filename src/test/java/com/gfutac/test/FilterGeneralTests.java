@@ -2,8 +2,8 @@ package com.gfutac.test;
 
 import com.gfutac.restfilter.filter.FilterLexer;
 import com.gfutac.restfilter.filter.FilterParser;
-import com.gfutac.restfilter.filter.FilterTokenType;
-import com.gfutac.restfilter.filter.FilterParseTreeVisitor;
+import com.gfutac.restfilter.filter.parser.FilterTokenType;
+import com.gfutac.restfilter.filter.parser.FilterParseTreeVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;

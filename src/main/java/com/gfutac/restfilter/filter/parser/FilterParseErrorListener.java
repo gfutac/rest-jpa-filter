@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.filter;
+package com.gfutac.restfilter.filter.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.BaseErrorListener;

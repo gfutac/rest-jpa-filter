@@ -1,7 +1,11 @@
 package com.gfutac.test;
 
 import com.gfutac.Application;
-import com.gfutac.restfilter.filter.*;
+import com.gfutac.restfilter.filter.parser.FilterExpression;
+import com.gfutac.restfilter.filter.parser.FilterTokenType;
+import com.gfutac.restfilter.filter.specification.GenericSpecification;
+import com.gfutac.restfilter.filter.specification.GenericSpecificationBuilder;
+import com.gfutac.restfilter.filter.specification.SpecificationBuildingException;
 import com.gfutac.restfilter.model.Author;
 import com.gfutac.restfilter.model.Book;
 import com.gfutac.restfilter.model.BookChapter;

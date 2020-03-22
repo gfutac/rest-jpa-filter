@@ -1,6 +1,7 @@
 package com.gfutac.test;
 
 import com.gfutac.restfilter.filter.*;
+import com.gfutac.restfilter.filter.parser.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
