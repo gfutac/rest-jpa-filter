@@ -5,47 +5,52 @@ import com.gfutac.restfilter.filter.FilterParser;
 import com.gfutac.restfilter.filter.parser.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Slf4j
 public class GenericSpecificationBuilder<T> {
 
-    private List<FilterExpression> criteria;
+    private Specification<T> builtSpecification;
 
-    public GenericSpecificationBuilder() {
-        this.criteria = new ArrayList<>();
+    public GenericSpecificationBuilder<T> and(String key, FilterTokenType operation, Object value) {
+        var filterExpression = new FilterExpression(key, operation, value);
+        var specification = new GenericSpecification<T>(filterExpression);
+
+        if (this.builtSpecification == null) {
+            this.builtSpecification = specification;
+        } else {
+            this.builtSpecification = Specification.where(this.builtSpecification).and(specification);
+        }
+
+        return this;
     }
 
-    public GenericSpecificationBuilder<T> with(String key, FilterTokenType operation, Object value) {
-        this.criteria.add(new FilterExpression(key, operation, value));
+    public GenericSpecificationBuilder<T> or(String key, FilterTokenType operation, Object value) {
+        var filterExpression = new FilterExpression(key, operation, value);
+        var specification = new GenericSpecification<T>(filterExpression);
+
+        if (this.builtSpecification == null) {
+            this.builtSpecification = specification;
+        } else {
+            this.builtSpecification = Specification.where(this.builtSpecification).or(specification);
+        }
+
         return this;
     }
 
     public Specification<T> build() {
-        if (this.criteria.size() == 0) return null;
-
-        var specifications = this.criteria.stream()
-                .map((Function<FilterExpression, Specification<T>>) GenericSpecification::new)
-                .collect(Collectors.toList());
-
-        var result = specifications.get(0);
-        result = specifications.stream()
-                .skip(1)
-                .reduce(result, (tmp, element) -> Specification.where(tmp).and(element));
-
-        return result;
+        return this.builtSpecification;
     }
 
     public Specification<T> build(String expression) throws SpecificationBuildingException {

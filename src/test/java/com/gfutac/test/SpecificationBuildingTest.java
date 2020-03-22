@@ -73,8 +73,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder
-                .with("name", FilterTokenType.COMPARATOR_EQ, "J.R.R Tolkien")
-                .with("authorId", FilterTokenType.COMPARATOR_EQ, 1L)
+                .and("name", FilterTokenType.COMPARATOR_EQ, "J.R.R Tolkien")
+                .and("authorId", FilterTokenType.COMPARATOR_EQ, 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -87,7 +87,7 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
+                .and("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -100,7 +100,7 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Author>();
 
         var specification = builder
-                .with("authorId", FilterTokenType.COMPARATOR_GT, 1L)
+                .and("authorId", FilterTokenType.COMPARATOR_GT, 1L)
                 .build();
 
         var result = this.authorRepository.findAll(specification);
@@ -113,8 +113,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
-                .with("author.authorId", FilterTokenType.COMPARATOR_EQ, 1L)
+                .and("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
+                .and("author.authorId", FilterTokenType.COMPARATOR_EQ, 1L)
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -127,8 +127,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("name", FilterTokenType.COMPARATOR_LIKE, "The Lord Of The Rings")
-                .with("publishingDate", FilterTokenType.COMPARATOR_GT, LocalDateTime.of(1955, 1, 1, 0, 0))
+                .and("name", FilterTokenType.COMPARATOR_LIKE, "The Lord Of The Rings")
+                .and("publishingDate", FilterTokenType.COMPARATOR_GT, LocalDateTime.of(1955, 1, 1, 0, 0))
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -141,9 +141,9 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", FilterTokenType.COMPARATOR_GT, LocalDateTime.of(1996, 1, 1, 0, 0))
-                .with("publishingDate", FilterTokenType.COMPARATOR_LT, LocalDateTime.of(2001, 1, 1, 0, 0))
-                .with("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
+                .and("publishingDate", FilterTokenType.COMPARATOR_GT, LocalDateTime.of(1996, 1, 1, 0, 0))
+                .and("publishingDate", FilterTokenType.COMPARATOR_LT, LocalDateTime.of(2001, 1, 1, 0, 0))
+                .and("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -157,8 +157,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", FilterTokenType.COMPARATOR_EQ, null)
-                .with("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
+                .and("publishingDate", FilterTokenType.COMPARATOR_EQ, null)
+                .and("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -172,8 +172,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", FilterTokenType.COMPARATOR_NE, null)
-                .with("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
+                .and("publishingDate", FilterTokenType.COMPARATOR_NE, null)
+                .and("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
                 .build();
 
         var result = this.bookRepository.findAll(specification);
@@ -192,8 +192,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<Book>();
 
         var specification = builder
-                .with("publishingDate", FilterTokenType.COMPARATOR_NE, null)
-                .with("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
+                .and("publishingDate", FilterTokenType.COMPARATOR_NE, null)
+                .and("author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
                 .build();
 
         var page = 2;
@@ -215,8 +215,8 @@ public class SpecificationBuildingTest {
         var builder = new GenericSpecificationBuilder<BookChapter>();
 
         var specification = builder
-                .with("book.name", FilterTokenType.COMPARATOR_EQ, "A Game of Thrones")
-                .with("book.author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
+                .and("book.name", FilterTokenType.COMPARATOR_EQ, "A Game of Thrones")
+                .and("book.author.name", FilterTokenType.COMPARATOR_EQ, "George Martin")
                 .build();
 
         var result = this.bookChapterRepository.findAll(specification);
@@ -284,14 +284,12 @@ public class SpecificationBuildingTest {
     @Test(expected = SpecificationBuildingException.class)
     public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLike_thenException() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
-
-        var specification = builder.build("name ~~ \"George\"");
+        builder.build("name ~~ \"George\"");
     }
 
     @Test(expected = SpecificationBuildingException.class)
     public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLikeAndId_thenException() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Author>();
-
-        var specification = builder.build("name ~~ \"George\" AND authorId = 2");
+        builder.build("name ~~ \"George\" AND authorId = 2");
     }
 }
