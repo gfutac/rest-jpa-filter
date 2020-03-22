@@ -2,7 +2,6 @@ package com.gfutac.restfilter.filter.specification;
 
 import com.gfutac.restfilter.filter.parser.FilterExpression;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
 import org.hibernate.query.criteria.internal.predicate.ComparisonPredicate;
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenericSpecification<T> implements Specification<T> {
