@@ -17,7 +17,7 @@ comparator
  ;
 
 value
- : DECIMAL | STRING | DATE;
+ : NUMERIC | STRING | DATE;
 
 AND        : 'AND'|'and' ;
 OR         : 'OR'|'or' ;
@@ -34,7 +34,7 @@ NLIKE      : '!~' ;
 LPAREN     : '(' ;
 RPAREN     : ')' ;
 
-DECIMAL    : '-'? [0-9]+ ( '.' [0-9]+ )? ;
+NUMERIC    : '-'? [0-9]+ ( '.' [0-9]+ )? ;
 STRING     : '"' ('\\' (["\\/bfnrt] | 'u' [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) | ~ ["\\\u0000-\u001F])* '"';
 DATE       : 'date"' YEAR '-' MONTH '-' DAY 'T' HOUR ':' MIN ':' SEC '.' MILIS 'Z' '"';
 

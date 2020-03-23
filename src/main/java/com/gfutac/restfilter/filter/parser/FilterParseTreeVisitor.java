@@ -53,7 +53,7 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         String txt = ctx.right.getText();
         if (ctx.right.STRING() != null) {
             value = this.getStringValue(txt);
-        } else if (ctx.right.DECIMAL() != null) {
+        } else if (ctx.right.NUMERIC() != null) {
             value = this.getNumericValue(txt);
         } else if (ctx.right.DATE() != null) {
             value = getDateValue(txt);
@@ -66,7 +66,8 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
     }
 
     private Number getNumericValue(@NonNull String str) {
-        Number value = null;
+        Number value
+                ;
         if (str.contains(".")) value = this.getDoubleValue(str);
         else value = this.getLongValue(str);
 
