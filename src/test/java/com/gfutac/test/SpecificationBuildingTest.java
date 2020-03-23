@@ -105,7 +105,7 @@ public class SpecificationBuildingTest {
 
         var result = this.authorRepository.findAll(specification);
 
-        Assert.assertEquals(5, result.size());
+        Assert.assertEquals(6, result.size());
     }
 
     @Test
@@ -279,6 +279,30 @@ public class SpecificationBuildingTest {
         Assert.assertTrue(result.stream().allMatch(i -> List.of(
                 "George Martin",
                 "Edgar Allan Poe").contains(i.getName())));
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeWithSingleQuote_thenCorrect() throws SpecificationBuildingException {
+        var builder = new GenericSpecificationBuilder<Book>();
+
+        var specification = builder.build("name ~ \"horse's\"");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("A Horse's Tale", result.get(0).getName());
+    }
+
+    @Test
+    public void givenStringAsFilter_WhenGettingAuthorsByNameLikeWithDuobleQuote_thenCorrect() throws SpecificationBuildingException {
+        var builder = new GenericSpecificationBuilder<Book>();
+
+        var specification = builder.build("name ~ \"\\\"quote\"");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("A book with double quote: \"quoted text\"", result.get(0).getName());
     }
 
     @Test(expected = SpecificationBuildingException.class)

@@ -248,7 +248,7 @@ public class FilterGeneralTests {
 
     @Test
     public void test_13() {
-        var expression = "some.identifier ~ \"some \"text here!\"";
+        var expression = "some.identifier ~ \"some \\\"text here!\"";
         var lexer = new FilterLexer(CharStreams.fromString(expression));
         var tokens = new CommonTokenStream(lexer);
         var parser = new FilterParser(tokens);

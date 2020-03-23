@@ -102,7 +102,10 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         String value = null;
 
         if (str.startsWith("\"") && str.endsWith("\"")) {
-            value = str.substring(1, str.length() - 1).trim();
+            value = str
+                    .substring(1, str.length() - 1)
+                    .trim()
+                    .replace("\\\"", "\"");
         }
 
         return value;
