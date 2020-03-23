@@ -2,12 +2,16 @@ package com.gfutac.restfilter.filter.parser;
 
 import com.gfutac.restfilter.filter.FilterBaseVisitor;
 import com.gfutac.restfilter.filter.FilterParser;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Deque;
 import java.util.LinkedList;
 
+@Slf4j
 public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
 
     private Deque<FilterToken> tokens;
@@ -48,27 +52,76 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         Object value = null;
         String txt = ctx.right.getText();
         if (ctx.right.STRING() != null) {
-            if (txt.startsWith("\"") && txt.endsWith("\"")) {
-                value = txt.substring(1, txt.length() - 1).trim();
-            }
+            value = this.getStringValue(txt);
         } else if (ctx.right.DECIMAL() != null) {
-            if (txt.contains(".")) {
-                value = Double.parseDouble(txt);
-            } else {
-                value = Long.parseLong(txt);
-            }
+            value = this.getNumericValue(txt);
         } else if (ctx.right.DATE() != null) {
-            if (txt.startsWith("date\"") && txt.endsWith("\"")) {
-                var tmp = txt.replace("date\"", "");
-                tmp = tmp.substring(0, tmp.length() - 1);
-                value = ZonedDateTime.parse(tmp, DateTimeFormatter.ISO_DATE_TIME);
-            }
+            value = getDateValue(txt);
         }
 
         var filterExpression = new FilterExpression(ctx.left.getText(), tokenType, value);
         this.tokens.add(new FilterToken(FilterTokenType.EXPRESSION, filterExpression));
 
         return super.visitComparatorExpression(ctx);
+    }
+
+    private Number getNumericValue(@NonNull String str) {
+        Number value = null;
+        if (str.contains(".")) value = this.getDoubleValue(str);
+        else value = this.getLongValue(str);
+
+        return value;
+    }
+
+    private Double getDoubleValue(@NonNull String str) {
+        Double value = null;
+
+        try {
+            value = Double.parseDouble(str);
+        } catch (NumberFormatException ne) {
+            log.error("Can not parse {} as double.", str);
+        }
+
+        return value;
+    }
+
+    private Long getLongValue(@NonNull String str) {
+        Long value = null;
+
+        try {
+            value = Long.parseLong(str);
+        } catch (NumberFormatException ne) {
+            log.error("Can not parse {} as long.", str);
+        }
+
+        return value;
+    }
+
+    private String getStringValue(@NonNull String str) {
+        String value = null;
+
+        if (str.startsWith("\"") && str.endsWith("\"")) {
+            value = str.substring(1, str.length() - 1).trim();
+        }
+
+        return value;
+    }
+
+    private ZonedDateTime getDateValue(@NonNull String str) {
+        ZonedDateTime value = null;
+
+        if (str.startsWith("date\"") && str.endsWith("\"")) {
+            var tmp = str.replace("date\"", "");
+            tmp = tmp.substring(0, tmp.length() - 1);
+
+            try {
+                value = ZonedDateTime.parse(tmp, DateTimeFormatter.ISO_DATE_TIME);
+            } catch(DateTimeParseException e) {
+                log.error("Can not parse {} as ZonedDateTime.", str);
+            }
+        }
+
+        return value;
     }
 }
 

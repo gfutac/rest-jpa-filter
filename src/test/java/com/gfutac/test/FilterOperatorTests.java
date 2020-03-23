@@ -41,7 +41,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -63,7 +63,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_NE, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_NE, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -85,7 +85,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_GT, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_GT, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -107,7 +107,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_GE, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_GE, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -129,7 +129,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_LT, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_LT, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -151,7 +151,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_LE, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_LE, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals(35L, parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -173,7 +173,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals("string expression", parsedExpression.getFilterExpression().getValue());
         }
     }
@@ -195,7 +195,7 @@ public class FilterOperatorTests {
             Assert.assertEquals(1, res.size());
             Assert.assertNotNull(Objects.requireNonNull(parsedExpression).getFilterExpression());
             Assert.assertEquals("someIdentifier", parsedExpression.getFilterExpression().getOperand());
-            Assert.assertEquals(FilterTokenType.COMPARATOR_NLIKE, parsedExpression.getFilterExpression().getComparison());
+            Assert.assertEquals(FilterTokenType.COMPARATOR_NLIKE, parsedExpression.getFilterExpression().getComparator());
             Assert.assertEquals("string expression", parsedExpression.getFilterExpression().getValue());
         }
     }

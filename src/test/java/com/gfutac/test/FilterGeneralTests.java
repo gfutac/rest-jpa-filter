@@ -100,7 +100,7 @@ public class FilterGeneralTests {
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparator());
         Assert.assertEquals(35L, res.peek().getFilterExpression().getValue());
     }
 
@@ -118,7 +118,7 @@ public class FilterGeneralTests {
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparator());
         Assert.assertEquals("some text here!", res.peek().getFilterExpression().getValue());
     }
 
@@ -260,7 +260,7 @@ public class FilterGeneralTests {
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.identifier", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getComparison());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_LIKE, res.peek().getFilterExpression().getComparator());
         Assert.assertEquals("some \"text here!", res.peek().getFilterExpression().getValue());
     }
 
@@ -278,7 +278,7 @@ public class FilterGeneralTests {
         Assert.assertEquals(1, res.size());
         Assert.assertEquals(FilterTokenType.EXPRESSION, res.peek().getTokenType());
         Assert.assertEquals("some.date", res.peek().getFilterExpression().getOperand());
-        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparison());
+        Assert.assertEquals(FilterTokenType.COMPARATOR_EQ, res.peek().getFilterExpression().getComparator());
         Assert.assertEquals(ZonedDateTime.parse("2020-03-21T00:52:40.950Z"), res.peek().getFilterExpression().getValue());
     }
 

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FilterExpression {
     private String operand;
-    private FilterTokenType comparison;
+    private FilterTokenType comparator;
     private Object value;
 }

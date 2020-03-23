@@ -1,8 +1,8 @@
 package com.gfutac.restfilter.filter.parser;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class FilterToken {
     private FilterTokenType tokenType;
     private FilterExpression filterExpression;
