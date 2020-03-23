@@ -4,7 +4,6 @@ import com.gfutac.restfilter.filter.FilterLexer;
 import com.gfutac.restfilter.filter.FilterParser;
 import com.gfutac.restfilter.filter.parser.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

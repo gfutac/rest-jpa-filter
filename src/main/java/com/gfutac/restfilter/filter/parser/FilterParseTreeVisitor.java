@@ -38,16 +38,16 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
 
     @Override
     public Object visitComparatorExpression(FilterParser.ComparatorExpressionContext ctx) {
-        FilterTokenType tokenType = FilterTokenType.COMPARATOR_EQ;
+        FilterTokenType tokenType = null;
 
         if (ctx.op.EQ() != null) tokenType = FilterTokenType.COMPARATOR_EQ;
-        if (ctx.op.NE() != null) tokenType = FilterTokenType.COMPARATOR_NE;
-        if (ctx.op.LIKE() != null) tokenType = FilterTokenType.COMPARATOR_LIKE;
-        if (ctx.op.NLIKE() != null) tokenType = FilterTokenType.COMPARATOR_NLIKE;
-        if (ctx.op.GT() != null) tokenType = FilterTokenType.COMPARATOR_GT;
-        if (ctx.op.GE() != null) tokenType = FilterTokenType.COMPARATOR_GE;
-        if (ctx.op.LE() != null) tokenType = FilterTokenType.COMPARATOR_LE;
-        if (ctx.op.LT() != null) tokenType = FilterTokenType.COMPARATOR_LT;
+        else if (ctx.op.NE() != null) tokenType = FilterTokenType.COMPARATOR_NE;
+        else if (ctx.op.LIKE() != null) tokenType = FilterTokenType.COMPARATOR_LIKE;
+        else if (ctx.op.NLIKE() != null) tokenType = FilterTokenType.COMPARATOR_NLIKE;
+        else if (ctx.op.GT() != null) tokenType = FilterTokenType.COMPARATOR_GT;
+        else if (ctx.op.GE() != null) tokenType = FilterTokenType.COMPARATOR_GE;
+        else if (ctx.op.LE() != null) tokenType = FilterTokenType.COMPARATOR_LE;
+        else if (ctx.op.LT() != null) tokenType = FilterTokenType.COMPARATOR_LT;
 
         Object value = null;
         String txt = ctx.right.getText();
