@@ -19,31 +19,31 @@ import java.util.Stack;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-public class QuerySpecificationBuilder<T> {
+public class FilterSpecificationBuilder<T> {
 
     private Specification<T> builtSpecification;
 
-    public QuerySpecificationBuilder<T> and(String key, FilterTokenType operation, Object value) {
+    public FilterSpecificationBuilder<T> and(String key, FilterTokenType operation, Object value) {
         var filterExpression = new FilterExpression(key, operation, value);
-        var specification = new QuerySpecification<T>(filterExpression);
+        var specification = new FilterSpecification<T>(filterExpression);
 
         if (this.builtSpecification == null) {
             this.builtSpecification = specification;
         } else {
-            this.builtSpecification = Specification.where(this.builtSpecification).and(specification);
+            this.builtSpecification = this.builtSpecification.and(specification);
         }
 
         return this;
     }
 
-    public QuerySpecificationBuilder<T> or(String key, FilterTokenType operation, Object value) {
+    public FilterSpecificationBuilder<T> or(String key, FilterTokenType operation, Object value) {
         var filterExpression = new FilterExpression(key, operation, value);
-        var specification = new QuerySpecification<T>(filterExpression);
+        var specification = new FilterSpecification<T>(filterExpression);
 
         if (this.builtSpecification == null) {
             this.builtSpecification = specification;
         } else {
-            this.builtSpecification = Specification.where(this.builtSpecification).or(specification);
+            this.builtSpecification = this.builtSpecification.or(specification);
         }
 
         return this;
@@ -75,15 +75,15 @@ public class QuerySpecificationBuilder<T> {
 
         for (var token : prefixExpression) {
             if (token.getTokenType() == FilterTokenType.EXPRESSION) {
-                stack.push(new QuerySpecification<>(token.getFilterExpression()));
+                stack.push(new FilterSpecification<>(token.getFilterExpression()));
             } else {
                 var firstOperand = stack.pop();
                 var secondOperand = stack.pop();
 
                 if (token.getTokenType() == FilterTokenType.BINARY_OR) {
-                    stack.push(Specification.where(firstOperand).or(secondOperand));
+                    stack.push(firstOperand.or(secondOperand));
                 } else if (token.getTokenType() == FilterTokenType.BINARY_AND) {
-                    stack.push(Specification.where(firstOperand).and(secondOperand));
+                    stack.push(firstOperand.and(secondOperand));
                 }
             }
         }

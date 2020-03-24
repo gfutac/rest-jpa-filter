@@ -3,8 +3,8 @@ package com.gfutac.test;
 import com.gfutac.Application;
 import com.gfutac.query.filter.parser.FilterExpression;
 import com.gfutac.query.filter.parser.FilterTokenType;
-import com.gfutac.query.filter.specification.QuerySpecification;
-import com.gfutac.query.filter.specification.QuerySpecificationBuilder;
+import com.gfutac.query.filter.specification.FilterSpecification;
+import com.gfutac.query.filter.specification.FilterSpecificationBuilder;
 import com.gfutac.query.filter.specification.SpecificationBuildingException;
 import com.gfutac.model.Author;
 import com.gfutac.model.Book;
@@ -46,7 +46,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenName_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new QuerySpecification<Author>(new FilterExpression("name", FilterTokenType.COMPARATOR_EQ, "J.R.R Tolkien"));
+        var specification = new FilterSpecification<Author>(new FilterExpression("name", FilterTokenType.COMPARATOR_EQ, "J.R.R Tolkien"));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -54,7 +54,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new QuerySpecification<Author>(new FilterExpression("authorId", FilterTokenType.COMPARATOR_EQ, 1));
+        var specification = new FilterSpecification<Author>(new FilterExpression("authorId", FilterTokenType.COMPARATOR_EQ, 1));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertTrue(result.stream().anyMatch(i -> i.getName().equals("J.R.R Tolkien")));
@@ -62,7 +62,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNonexistingId_whenGettingListOfAuthors_thenCorrect() {
-        var specification = new QuerySpecification<Author>(new FilterExpression("authorId", FilterTokenType.COMPARATOR_EQ, 100));
+        var specification = new FilterSpecification<Author>(new FilterExpression("authorId", FilterTokenType.COMPARATOR_EQ, 100));
         var result = this.authorRepository.findAll(specification);
 
         Assert.assertEquals(0, result.size());
@@ -70,7 +70,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNameWithBuilder_whenGettingListOfAuthors_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder
                 .and("name", FilterTokenType.COMPARATOR_EQ, "J.R.R Tolkien")
@@ -84,7 +84,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenBookIdWithBuilder_whenGettingListOfBooks_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
@@ -97,7 +97,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenAuthorIdGreaterThanWithBuilder_whenGettingListOfBooks_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder
                 .and("authorId", FilterTokenType.COMPARATOR_GT, 1L)
@@ -110,7 +110,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenBookIdAndAuthorIdWithBuilder_whenGettingListOfBooks_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("bookId", FilterTokenType.COMPARATOR_EQ, 1L)
@@ -124,7 +124,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenBookNameAndPublishingYearWithBuilder_WhenGettingListOfBooks_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("name", FilterTokenType.COMPARATOR_LIKE, "The Lord Of The Rings")
@@ -138,7 +138,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenDateRanges_WhenGettingListOfBooksAndAuthor_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("publishingDate", FilterTokenType.COMPARATOR_GT, LocalDateTime.of(1996, 1, 1, 0, 0))
@@ -154,7 +154,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNullDates_WhenGettingListOfBooksAndAuthor_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("publishingDate", FilterTokenType.COMPARATOR_EQ, null)
@@ -169,7 +169,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNullDates_WhenGettingListOfBooksAndAuthorWithPublishDate_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("publishingDate", FilterTokenType.COMPARATOR_NE, null)
@@ -189,7 +189,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenNullDates_WhenGettingListOfBooksAndAuthorWithPublishDateSecondPage_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder
                 .and("publishingDate", FilterTokenType.COMPARATOR_NE, null)
@@ -212,7 +212,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenAuthorName_WhenGettingListOfBookChapters_thenCorrect() {
-        var builder = new QuerySpecificationBuilder<BookChapter>();
+        var builder = new FilterSpecificationBuilder<BookChapter>();
 
         var specification = builder
                 .and("book.name", FilterTokenType.COMPARATOR_EQ, "A Game of Thrones")
@@ -232,7 +232,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorById_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1");
 
@@ -244,7 +244,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorByIdOrName_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder.build("authorId = 1 OR name = \"George Martin\"");
 
@@ -257,7 +257,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorByNameLike_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder.build("name ~ \"George\"");
 
@@ -269,7 +269,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorsByNameLikeAndIdLesserThan_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
 
         var specification = builder.build("(name ~ \"George\" OR name ~ \"Edgar\") AND authorId < 4");
 
@@ -283,7 +283,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorsByNameLikeWithSingleQuote_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder.build("name ~ \"Horse's\"");
 
@@ -295,7 +295,7 @@ public class SpecificationBuildingTest {
 
     @Test
     public void givenStringAsFilter_WhenGettingAuthorsByNameLikeWithDuobleQuote_thenCorrect() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Book>();
+        var builder = new FilterSpecificationBuilder<Book>();
 
         var specification = builder.build("name ~ \"\\\"quote\"");
 
@@ -307,13 +307,13 @@ public class SpecificationBuildingTest {
 
     @Test(expected = SpecificationBuildingException.class)
     public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLike_thenException() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
         builder.build("name ~~ \"George\"");
     }
 
     @Test(expected = SpecificationBuildingException.class)
     public void givenMalformedStringAsFilter_WhenGettingAuthorsByNameLikeAndId_thenException() throws SpecificationBuildingException {
-        var builder = new QuerySpecificationBuilder<Author>();
+        var builder = new FilterSpecificationBuilder<Author>();
         builder.build("name ~~ \"George\" AND authorId = 2");
     }
 }

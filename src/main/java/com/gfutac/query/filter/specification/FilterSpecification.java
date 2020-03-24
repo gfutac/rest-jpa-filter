@@ -18,20 +18,20 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class QuerySpecification<T> implements Specification<T> {
+public class FilterSpecification<T> implements Specification<T> {
 
     protected FilterExpression filterExpression;
 
     private static Map<FilterTokenType, Function<PredicateParameter, Predicate>> predicates = new HashMap<>() {
         {{
-            put(FilterTokenType.COMPARATOR_EQ, QuerySpecification::equal);
-            put(FilterTokenType.COMPARATOR_NE, QuerySpecification::notEqual);
-            put(FilterTokenType.COMPARATOR_GT, QuerySpecification::greaterThan);
-            put(FilterTokenType.COMPARATOR_GE, QuerySpecification::greaterThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LT, QuerySpecification::lessThan);
-            put(FilterTokenType.COMPARATOR_LE, QuerySpecification::lessThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LIKE, QuerySpecification::like);
-            put(FilterTokenType.COMPARATOR_NLIKE, QuerySpecification::notLike);
+            put(FilterTokenType.COMPARATOR_EQ, FilterSpecification::equal);
+            put(FilterTokenType.COMPARATOR_NE, FilterSpecification::notEqual);
+            put(FilterTokenType.COMPARATOR_GT, FilterSpecification::greaterThan);
+            put(FilterTokenType.COMPARATOR_GE, FilterSpecification::greaterThanOrEqual);
+            put(FilterTokenType.COMPARATOR_LT, FilterSpecification::lessThan);
+            put(FilterTokenType.COMPARATOR_LE, FilterSpecification::lessThanOrEqual);
+            put(FilterTokenType.COMPARATOR_LIKE, FilterSpecification::like);
+            put(FilterTokenType.COMPARATOR_NLIKE, FilterSpecification::notLike);
         }}
     };
 
@@ -41,7 +41,7 @@ public class QuerySpecification<T> implements Specification<T> {
         var criteriaComparator = filterExpression.getComparator();
 
         var predicateParameter = new PredicateParameter(builder, attributePath, filterExpression.getValue());
-        var predicate = QuerySpecification.predicates.get(criteriaComparator);
+        var predicate = FilterSpecification.predicates.get(criteriaComparator);
 
         if (predicate != null) {
             return predicate.apply(predicateParameter);
