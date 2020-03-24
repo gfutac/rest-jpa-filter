@@ -31,8 +31,8 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = Application.class)
 @Transactional
 @Rollback
-@ActiveProfiles("local")
-@Profile("local")
+@ActiveProfiles("integration")
+@Profile("integration")
 public class SpecificationBuildingTest {
 
     @Autowired
@@ -285,7 +285,7 @@ public class SpecificationBuildingTest {
     public void givenStringAsFilter_WhenGettingAuthorsByNameLikeWithSingleQuote_thenCorrect() throws SpecificationBuildingException {
         var builder = new GenericSpecificationBuilder<Book>();
 
-        var specification = builder.build("name ~ \"horse's\"");
+        var specification = builder.build("name ~ \"Horse's\"");
 
         var result = this.bookRepository.findAll(specification);
 
