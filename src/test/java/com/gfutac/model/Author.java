@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.model;
+package com.gfutac.model;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

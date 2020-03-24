@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.filter.parser;
+package com.gfutac.query.filter.parser;
 
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 

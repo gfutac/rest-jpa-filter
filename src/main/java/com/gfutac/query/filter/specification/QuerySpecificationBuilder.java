@@ -1,8 +1,8 @@
-package com.gfutac.restfilter.filter.specification;
+package com.gfutac.query.filter.specification;
 
+import com.gfutac.query.filter.parser.*;
 import com.gfutac.restfilter.filter.FilterLexer;
 import com.gfutac.restfilter.filter.FilterParser;
-import com.gfutac.restfilter.filter.parser.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,13 +19,13 @@ import java.util.Stack;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-public class GenericSpecificationBuilder<T> {
+public class QuerySpecificationBuilder<T> {
 
     private Specification<T> builtSpecification;
 
-    public GenericSpecificationBuilder<T> and(String key, FilterTokenType operation, Object value) {
+    public QuerySpecificationBuilder<T> and(String key, FilterTokenType operation, Object value) {
         var filterExpression = new FilterExpression(key, operation, value);
-        var specification = new GenericSpecification<T>(filterExpression);
+        var specification = new QuerySpecification<T>(filterExpression);
 
         if (this.builtSpecification == null) {
             this.builtSpecification = specification;
@@ -36,9 +36,9 @@ public class GenericSpecificationBuilder<T> {
         return this;
     }
 
-    public GenericSpecificationBuilder<T> or(String key, FilterTokenType operation, Object value) {
+    public QuerySpecificationBuilder<T> or(String key, FilterTokenType operation, Object value) {
         var filterExpression = new FilterExpression(key, operation, value);
-        var specification = new GenericSpecification<T>(filterExpression);
+        var specification = new QuerySpecification<T>(filterExpression);
 
         if (this.builtSpecification == null) {
             this.builtSpecification = specification;
@@ -75,7 +75,7 @@ public class GenericSpecificationBuilder<T> {
 
         for (var token : prefixExpression) {
             if (token.getTokenType() == FilterTokenType.EXPRESSION) {
-                stack.push(new GenericSpecification<>(token.getFilterExpression()));
+                stack.push(new QuerySpecification<>(token.getFilterExpression()));
             } else {
                 var firstOperand = stack.pop();
                 var secondOperand = stack.pop();

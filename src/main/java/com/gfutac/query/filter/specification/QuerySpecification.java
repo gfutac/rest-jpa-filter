@@ -1,7 +1,7 @@
-package com.gfutac.restfilter.filter.specification;
+package com.gfutac.query.filter.specification;
 
-import com.gfutac.restfilter.filter.parser.FilterExpression;
-import com.gfutac.restfilter.filter.parser.FilterTokenType;
+import com.gfutac.query.filter.parser.FilterExpression;
+import com.gfutac.query.filter.parser.FilterTokenType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,20 +18,20 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class GenericSpecification<T> implements Specification<T> {
+public class QuerySpecification<T> implements Specification<T> {
 
     protected FilterExpression filterExpression;
 
     private static Map<FilterTokenType, Function<PredicateParameter, Predicate>> predicates = new HashMap<>() {
         {{
-            put(FilterTokenType.COMPARATOR_EQ, GenericSpecification::equal);
-            put(FilterTokenType.COMPARATOR_NE, GenericSpecification::notEqual);
-            put(FilterTokenType.COMPARATOR_GT, GenericSpecification::greaterThan);
-            put(FilterTokenType.COMPARATOR_GE, GenericSpecification::greaterThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LT, GenericSpecification::lessThan);
-            put(FilterTokenType.COMPARATOR_LE, GenericSpecification::lessThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LIKE, GenericSpecification::like);
-            put(FilterTokenType.COMPARATOR_NLIKE, GenericSpecification::notLike);
+            put(FilterTokenType.COMPARATOR_EQ, QuerySpecification::equal);
+            put(FilterTokenType.COMPARATOR_NE, QuerySpecification::notEqual);
+            put(FilterTokenType.COMPARATOR_GT, QuerySpecification::greaterThan);
+            put(FilterTokenType.COMPARATOR_GE, QuerySpecification::greaterThanOrEqual);
+            put(FilterTokenType.COMPARATOR_LT, QuerySpecification::lessThan);
+            put(FilterTokenType.COMPARATOR_LE, QuerySpecification::lessThanOrEqual);
+            put(FilterTokenType.COMPARATOR_LIKE, QuerySpecification::like);
+            put(FilterTokenType.COMPARATOR_NLIKE, QuerySpecification::notLike);
         }}
     };
 
@@ -41,7 +41,7 @@ public class GenericSpecification<T> implements Specification<T> {
         var criteriaComparator = filterExpression.getComparator();
 
         var predicateParameter = new PredicateParameter(builder, attributePath, filterExpression.getValue());
-        var predicate = GenericSpecification.predicates.get(criteriaComparator);
+        var predicate = QuerySpecification.predicates.get(criteriaComparator);
 
         if (predicate != null) {
             return predicate.apply(predicateParameter);

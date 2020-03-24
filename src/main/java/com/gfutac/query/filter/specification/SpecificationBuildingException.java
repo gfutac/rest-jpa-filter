@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.filter.specification;
+package com.gfutac.query.filter.specification;
 
 public class SpecificationBuildingException extends Exception {
 

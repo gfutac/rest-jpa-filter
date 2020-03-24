@@ -1,4 +1,4 @@
-package com.gfutac.restfilter.filter.parser;
+package com.gfutac.query.filter.parser;
 
 import com.gfutac.restfilter.filter.FilterBaseVisitor;
 import com.gfutac.restfilter.filter.FilterParser;

@@ -1,6 +1,6 @@
-package com.gfutac.restfilter.repositories;
+package com.gfutac.repositories;
 
-import com.gfutac.restfilter.model.Author;
+import com.gfutac.model.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
