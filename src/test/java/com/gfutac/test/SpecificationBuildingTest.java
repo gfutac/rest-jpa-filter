@@ -1,14 +1,14 @@
 package com.gfutac.test;
 
 import com.gfutac.Application;
+import com.gfutac.model.Author;
+import com.gfutac.model.Book;
+import com.gfutac.model.BookChapter;
 import com.gfutac.query.filter.parser.FilterExpression;
 import com.gfutac.query.filter.parser.FilterTokenType;
 import com.gfutac.query.filter.specification.FilterSpecification;
 import com.gfutac.query.filter.specification.FilterSpecificationBuilder;
 import com.gfutac.query.filter.specification.SpecificationBuildingException;
-import com.gfutac.model.Author;
-import com.gfutac.model.Book;
-import com.gfutac.model.BookChapter;
 import com.gfutac.repositories.AuthorRepository;
 import com.gfutac.repositories.BookChapterRepository;
 import com.gfutac.repositories.BookRepository;

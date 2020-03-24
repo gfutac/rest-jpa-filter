@@ -56,7 +56,7 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         } else if (ctx.right.NUMERIC() != null) {
             value = this.getNumericValue(txt);
         } else if (ctx.right.DATE() != null) {
-            value = getDateValue(txt);
+            value = this.getDateValue(txt);
         }
 
         var filterExpression = new FilterExpression(ctx.left.getText(), tokenType, value);
@@ -66,8 +66,8 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
     }
 
     private Number getNumericValue(@NonNull String str) {
-        Number value
-                ;
+        Number value;
+
         if (str.contains(".")) value = this.getDoubleValue(str);
         else value = this.getLongValue(str);
 
@@ -120,7 +120,7 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
 
             try {
                 value = ZonedDateTime.parse(tmp, DateTimeFormatter.ISO_DATE_TIME);
-            } catch(DateTimeParseException e) {
+            } catch (DateTimeParseException e) {
                 log.error("Can not parse {} as ZonedDateTime.", str);
             }
         }

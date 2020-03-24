@@ -20,47 +20,22 @@ import java.util.function.Function;
 @Slf4j
 public class FilterSpecification<T> implements Specification<T> {
 
-    protected FilterExpression filterExpression;
-
     private static Map<FilterTokenType, Function<PredicateParameter, Predicate>> predicates = new HashMap<>() {
-        {{
-            put(FilterTokenType.COMPARATOR_EQ, FilterSpecification::equal);
-            put(FilterTokenType.COMPARATOR_NE, FilterSpecification::notEqual);
-            put(FilterTokenType.COMPARATOR_GT, FilterSpecification::greaterThan);
-            put(FilterTokenType.COMPARATOR_GE, FilterSpecification::greaterThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LT, FilterSpecification::lessThan);
-            put(FilterTokenType.COMPARATOR_LE, FilterSpecification::lessThanOrEqual);
-            put(FilterTokenType.COMPARATOR_LIKE, FilterSpecification::like);
-            put(FilterTokenType.COMPARATOR_NLIKE, FilterSpecification::notLike);
-        }}
+        {
+            {
+                put(FilterTokenType.COMPARATOR_EQ, FilterSpecification::equal);
+                put(FilterTokenType.COMPARATOR_NE, FilterSpecification::notEqual);
+                put(FilterTokenType.COMPARATOR_GT, FilterSpecification::greaterThan);
+                put(FilterTokenType.COMPARATOR_GE, FilterSpecification::greaterThanOrEqual);
+                put(FilterTokenType.COMPARATOR_LT, FilterSpecification::lessThan);
+                put(FilterTokenType.COMPARATOR_LE, FilterSpecification::lessThanOrEqual);
+                put(FilterTokenType.COMPARATOR_LIKE, FilterSpecification::like);
+                put(FilterTokenType.COMPARATOR_NLIKE, FilterSpecification::notLike);
+            }
+        }
     };
 
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-        var attributePath = getPathToAttribute(root);
-        var criteriaComparator = filterExpression.getComparator();
-
-        var predicateParameter = new PredicateParameter(builder, attributePath, filterExpression.getValue());
-        var predicate = FilterSpecification.predicates.get(criteriaComparator);
-
-        if (predicate != null) {
-            return predicate.apply(predicateParameter);
-        }
-
-        log.warn("Can not find appropriate predicate for {}.", criteriaComparator);
-        return null;
-    }
-
-    private Path getPathToAttribute(Root<T> root) {
-        Path path = null;
-        var nestedObjects = filterExpression.getOperand().split("\\.");
-        for (var r : nestedObjects) {
-            if (path == null) path = root.get(r);
-            else path = path.get(r);
-        }
-
-        return path;
-    }
+    protected FilterExpression filterExpression;
 
     private static ComparisonPredicate greaterThan(PredicateParameter param) {
         return new ComparisonPredicate((CriteriaBuilderImpl) param.getBuilder(), ComparisonPredicate.ComparisonOperator.GREATER_THAN, param.getPath(), param.getValue());
@@ -108,6 +83,33 @@ public class FilterSpecification<T> implements Specification<T> {
         } else {
             return notEqual(param);
         }
+    }
+
+    @Override
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+        var attributePath = getPathToAttribute(root);
+        var comparator = filterExpression.getComparator();
+
+        var predicateParameter = new PredicateParameter(builder, attributePath, filterExpression.getValue());
+        var predicate = FilterSpecification.predicates.get(comparator);
+
+        if (predicate != null) {
+            return predicate.apply(predicateParameter);
+        }
+
+        log.warn("Can not find appropriate predicate for {}.", comparator);
+        return null;
+    }
+
+    private Path getPathToAttribute(Root<T> root) {
+        Path path = null;
+        var nestedObjects = filterExpression.getOperand().split("\\.");
+        for (var r : nestedObjects) {
+            if (path == null) path = root.get(r);
+            else path = path.get(r);
+        }
+
+        return path;
     }
 
     @Data
