@@ -316,4 +316,16 @@ public class SpecificationBuildingTest {
         var builder = new FilterSpecificationBuilder<Author>();
         builder.build("name ~~ \"George\" AND authorId = 2");
     }
+
+    @Test
+    public void givenNullDatesInString_WhenGettingListOfBooksAndAuthor_thenCorrect() throws SpecificationBuildingException {
+        var builder = new FilterSpecificationBuilder<Book>();
+
+        var specification = builder.build("publishingDate = NULL and author.name = \"George Martin\"");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of("The Winds of Winter", "A Dream of Spring").contains(i.getName())));
+    }
 }

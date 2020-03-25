@@ -1,7 +1,7 @@
 package com.gfutac.query.filter.parser;
 
-import com.gfutac.restfilter.filter.FilterBaseVisitor;
-import com.gfutac.restfilter.filter.FilterParser;
+import com.gfutac.query.filter.FilterBaseVisitor;
+import com.gfutac.query.filter.FilterParser;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +57,8 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
             value = this.getNumericValue(txt);
         } else if (ctx.right.DATE() != null) {
             value = this.getDateValue(txt);
+        } else if (ctx.right.NULL() != null) {
+            value = null;
         }
 
         var filterExpression = new FilterExpression(ctx.left.getText(), tokenType, value);

@@ -1,8 +1,8 @@
 package com.gfutac.test;
 
+import com.gfutac.query.filter.FilterLexer;
+import com.gfutac.query.filter.FilterParser;
 import com.gfutac.query.filter.parser.*;
-import com.gfutac.restfilter.filter.FilterLexer;
-import com.gfutac.restfilter.filter.FilterParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;

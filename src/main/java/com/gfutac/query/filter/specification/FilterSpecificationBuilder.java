@@ -1,8 +1,8 @@
 package com.gfutac.query.filter.specification;
 
+import com.gfutac.query.filter.FilterLexer;
+import com.gfutac.query.filter.FilterParser;
 import com.gfutac.query.filter.parser.*;
-import com.gfutac.restfilter.filter.FilterLexer;
-import com.gfutac.restfilter.filter.FilterParser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
