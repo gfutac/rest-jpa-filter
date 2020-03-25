@@ -43,6 +43,8 @@ INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (15, N'A Horse'
 INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (16, N'The Adventures of Tom Sawyer', 5, CAST(N'1876-01-01 00:00:00.000' AS DateTime));
 INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (17, N'Pride and Prejudice', 6, CAST(N'1813-01-28 00:00:00.000' AS DateTime));
 INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (18, N'A book with double quote: "quoted text"', 7, CAST(N'2020-03-23 23:03:08.420' AS DateTime));
+INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (19, N'', 7, CAST(N'2020-03-25 23:15:08.140' AS DateTime));
+INSERT INTO Book (BookID, Name, AuthorID, PublishingDate) VALUES (20, NULL, 7, CAST(N'2020-03-25 23:15:11.310' AS DateTime));
 
 INSERT INTO BookChapter (BookChapterID, ChapterName, BookID) VALUES (1, N'Chapter 1', 1);
 INSERT INTO BookChapter (BookChapterID, ChapterName, BookID) VALUES (2, N'Prologue', 4);

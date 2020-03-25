@@ -328,4 +328,16 @@ public class SpecificationBuildingTest {
         Assert.assertEquals(2, result.size());
         Assert.assertTrue(result.stream().allMatch(i -> List.of("The Winds of Winter", "A Dream of Spring").contains(i.getName())));
     }
+
+    @Test
+    public void givenEmptyString_WhenGettingListOfBookChapters_thenCorrect() throws SpecificationBuildingException {
+        var builder = new FilterSpecificationBuilder<Book>();
+
+        var specification = builder.build("name = NULL or name = \"\"");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(result.stream().allMatch(i -> List.of(19L, 20L).contains(i.getBookId())));
+    }
 }
