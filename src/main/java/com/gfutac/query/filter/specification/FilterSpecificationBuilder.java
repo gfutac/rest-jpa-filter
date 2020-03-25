@@ -49,6 +49,11 @@ public class FilterSpecificationBuilder<T> {
         return this;
     }
 
+    public FilterSpecification<T> buildOne(String key, FilterTokenType operation, Object value) {
+        var filterExpression = new FilterExpression(key, operation, value);
+        return new FilterSpecification<T>(filterExpression);
+    }
+
     public Specification<T> build() {
         return this.builtSpecification;
     }
