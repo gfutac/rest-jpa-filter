@@ -26,6 +26,9 @@ public class Book {
     @Column(name = "PublishingDate")
     private LocalDateTime publishingDate;
 
+    @Column(name = "IsFavorite")
+    private Boolean isFavorite;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "authorId")
     @ToString.Exclude

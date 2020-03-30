@@ -340,4 +340,28 @@ public class SpecificationBuildingTest {
         Assert.assertEquals(2, result.size());
         Assert.assertTrue(result.stream().allMatch(i -> List.of(19L, 20L).contains(i.getBookId())));
     }
+
+    @Test
+    public void givenBoolean_WhenGettingListOfFavoriteBooks_thenCorrect() throws SpecificationBuildingException {
+        var builder = new FilterSpecificationBuilder<Book>();
+
+        var specification = builder.build("isFavorite = true");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("A Game of Thrones", result.get(0).getName());
+    }
+
+    @Test
+    public void givenBooleanUppercase_WhenGettingListOfFavoriteBooks_thenCorrect() throws SpecificationBuildingException {
+        var builder = new FilterSpecificationBuilder<Book>();
+
+        var specification = builder.build("isFavorite = TRUE");
+
+        var result = this.bookRepository.findAll(specification);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("A Game of Thrones", result.get(0).getName());
+    }
 }

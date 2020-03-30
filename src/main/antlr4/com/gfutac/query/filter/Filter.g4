@@ -17,7 +17,7 @@ comparator
  ;
 
 value
- : NUMERIC | STRING | DATE | NULL;
+ : NUMERIC | STRING | DATE | BOOL | NULL;
 
 AND        : 'AND'|'and' ;
 OR         : 'OR'|'or' ;
@@ -38,6 +38,7 @@ NUMERIC    : '-'? [0-9]+ ( '.' [0-9]+ )? ;
 STRING     : '"' ('\\' (["\\/bfnrt] | 'u' [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) | ~ ["\\\u0000-\u001F])* '"';
 DATE       : 'date"' YEAR '-' MONTH '-' DAY 'T' HOUR ':' MIN ':' SEC '.' MILIS 'Z' '"';
 NULL       : 'NULL';
+BOOL       : 'TRUE'|'true'|'FALSE'|'false';
 
 IDENTIFIER : [a-zA-Z_$]('.'?[a-zA-Z_$0-9])*;
 WS         : [ \r\t\u000C\n]+ -> skip;

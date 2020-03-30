@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
@@ -57,6 +59,8 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
             value = this.getNumericValue(txt);
         } else if (ctx.right.DATE() != null) {
             value = this.getDateValue(txt);
+        } else if (ctx.right.BOOL() != null) {
+            value = this.getBoolValue(txt);
         } else if (ctx.right.NULL() != null) {
             value = null;
         }
@@ -128,6 +132,16 @@ public class FilterParseTreeVisitor extends FilterBaseVisitor<Object> {
         }
 
         return value;
+    }
+
+    private Boolean getBoolValue(@NonNull String str) {
+        var upper = str.toLowerCase();
+        if (List.of("true", "false").contains(upper)) {
+            return Boolean.parseBoolean(str);
+        }
+
+        log.error("Can not parse {} as Boolean.", str);
+        return null;
     }
 }
 
